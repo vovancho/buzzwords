@@ -22,3 +22,32 @@ docker-compose up -d --build
 
 
 https://github.com/sanman-99/vue-drf-pg-redis
+
+
+
+
+
+
+
+ipa phonetic
+
+
+https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -12,7 +12,10 @@
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <v-list-item>
+          <v-list-item @click="goToMain">
+            <v-list-item-title>Главная</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="goToDictionary">
             <v-list-item-title>Словарь</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
@@ -20,7 +23,7 @@
     </v-navigation-drawer>
 
     <v-main>
-      <v-container fluid>
+      <v-container>
         <router-view />
       </v-container>
     </v-main>
@@ -59,6 +62,14 @@ export default {
   watch: {
     group() {
       this.drawer = false;
+    },
+  },
+  methods: {
+    goToMain() {
+      this.$router.push({ name: "home" });
+    },
+    goToDictionary() {
+      this.$router.push({ name: "dictionary" });
     },
   },
 };
