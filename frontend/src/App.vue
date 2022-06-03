@@ -2,16 +2,17 @@
   <v-app>
     <v-app-bar app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-
+      <v-spacer v-if="title"></v-spacer>
+      <v-toolbar-title v-if="title">
+        <div class="text-h6 text-center">{{ title }}</div>
+        <div class="text-caption text-center">{{ subTitle }}</div>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list nav dense>
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
-        >
+        <v-list-item-group v-model="group">
           <v-list-item @click="goToMain">
             <v-list-item-title>Главная</v-list-item-title>
           </v-list-item>
@@ -51,13 +52,18 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+
 export default {
   name: "App",
-
   data: () => ({
     drawer: false,
     group: null,
     value: 1,
+  }),
+  computed: mapState({
+    title: (state) => state.title,
+    subTitle: (state) => state.subTitle,
   }),
   watch: {
     group() {
@@ -65,12 +71,17 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(["initWordsCount", "resetAppHeader"]),
     goToMain() {
       this.$router.push({ name: "home" });
     },
     goToDictionary() {
       this.$router.push({ name: "dictionary" });
     },
+  },
+  created: function () {
+    this.initWordsCount();
+    this.resetAppHeader();
   },
 };
 </script>

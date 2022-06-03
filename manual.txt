@@ -37,7 +37,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API
 
 
 https://github.com/vovancho/buzzwords/actions
-https://vovancho.github.io/buzzwords/
+https://vovancho.github.io/buzzwords/docs/
 
 
 
