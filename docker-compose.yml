@@ -10,29 +10,33 @@ services:
 #        depends_on:
 #            - bw-frontend-node
 
-    bw-frontend-node:
-        build:
-            context: docker/node
-        volumes:
-            - ./frontend:/var/www
-        ports:
-            - "8080:8080"
-        command: npm run serve
-
-    bw-vue-ui:
-        build:
-            context: docker/nginx/vueui
-        volumes:
-            - ./:/var/www
-        ports:
-            - "8000:8000"
+#    bw-frontend-node:
+#        build:
+#            context: docker/node
+#        volumes:
+#            - ./frontend:/var/www
+#        ports:
 #            - "8080:8080"
-        depends_on:
-            - bw-vue-ui-node
+#        command: npm run serve
+
+#    bw-vue-ui:
+#        build:
+#            context: docker/nginx/vueui
+#        volumes:
+#            - ./:/var/www
+#        ports:
+#            - "8000:8000"
+#            - "8080:8080"
+#        depends_on:
+#            - bw-vue-ui-node
 
     bw-vue-ui-node:
         build:
             context: docker/node
         volumes:
             - ./:/var/www
-        command: vue ui --headless --port 8000 --host 0.0.0.0
+        ports:
+            - "8000:8000"
+            - "8080:8080"
+#        command: vue ui --headless --port 8000 --host 0.0.0.0
+        command: npm run --prefix frontend serve

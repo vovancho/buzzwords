@@ -27,8 +27,7 @@ export default {
   },
   mounted() {
     this.setTitle("Словарь");
-    // this.setSubTitle(this.$tc("wordsCount", this.wordsCount));
-    this.setSubTitle(this.wordsCount);
+    this.setSubTitle(this.$tc("wordsCount", this.wordsCount));
   },
 };
 </script>

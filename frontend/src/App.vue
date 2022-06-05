@@ -71,17 +71,16 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["initWordsCount", "resetAppHeader"]),
+    ...mapMutations(["initWordsCount"]),
     goToMain() {
-      this.$router.push({ name: "home" });
+      this.$router.push({ name: "home" }).catch(() => {});
     },
     goToDictionary() {
-      this.$router.push({ name: "dictionary" });
+      this.$router.push({ name: "dictionary" }).catch(() => {});
     },
   },
   created: function () {
     this.initWordsCount();
-    this.resetAppHeader();
   },
 };
 </script>

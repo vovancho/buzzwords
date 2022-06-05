@@ -7,7 +7,15 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   name: "HomeItem",
+  methods: {
+    ...mapMutations(["resetAppHeader"]),
+  },
+  mounted() {
+    this.resetAppHeader();
+  },
 };
 </script>
