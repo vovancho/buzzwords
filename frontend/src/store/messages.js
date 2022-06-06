@@ -1,12 +1,5 @@
-export const messages = {
-  en: {
-    message: {
-      wordsCount: "Нет слов | {n} слово | {n} слов",
-    },
-  },
+export default {
   ru: {
-    message: {
-      wordsCount: "Нет слов | {n} слово | {n} слов",
-    },
+    wordsCount: "Нет слов | {n} слово | {n} слова",
   },
 };

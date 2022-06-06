@@ -1,13 +1,8 @@
 import Vue from "vue";
 import VueI18n from "vue-i18n";
+import messages from "../store/messages";
 
 Vue.use(VueI18n);
-
-const messages = {
-  ru: {
-    wordsCount: "Нет слов | {n} слово | {n} слов",
-  },
-};
 
 export default new VueI18n({
   locale: "ru", // установка локализации по умолчанию

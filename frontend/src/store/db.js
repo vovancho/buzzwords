@@ -2,6 +2,13 @@ import * as types from "./wordTypes";
 
 export default [
   {
+    name: "almost",
+    transcription: "ˈɔlˌmoʊst",
+    translation: "почти",
+    createdAt: "2022-06-03 07:26:55",
+    type: types.SIMPLE_TYPE,
+  },
+  {
     name: "come",
     transcription: "kām",
     translation: "прийти",
@@ -29,6 +36,20 @@ export default [
         translation: "Вернись",
       },
     ],
-    active: false,
+  },
+  {
+    name: "break down",
+    transcription: "breɪk daʊn",
+    translation: "разрушить, сдаться, разломать",
+    createdAt: "2022-06-03 07:25:55",
+    type: types.PHRASAL_VERB_TYPE,
+    v2: {
+      name: "broke down",
+      transcription: "broke daʊn",
+    },
+    v3: {
+      name: "broken down",
+      transcription: "broken daʊn",
+    },
   },
 ];

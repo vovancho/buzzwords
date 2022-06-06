@@ -2,8 +2,8 @@
   <v-list-group no-action>
     <template v-slot:activator>
       <v-list-item-action>
-        <v-btn icon>
-          <v-icon x-large>mdi-volume-high</v-icon>
+        <v-btn icon text x-large>
+          <v-icon>mdi-volume-high</v-icon>
         </v-btn>
       </v-list-item-action>
       <v-list-item-content>
@@ -19,14 +19,17 @@
       </v-list-item-content>
     </template>
 
-    <v-carousel :show-arrows="false">
+    <v-carousel
+      :show-arrows="false"
+      v-if="word.v2 || word.v3 || word.phrases || word.sentences"
+    >
       <v-carousel-item>
         <v-card>
           <v-list>
-            <v-list-item>
+            <v-list-item v-if="word.v2">
               <v-list-item-action>
-                <v-btn icon>
-                  <v-icon x-large>mdi-volume-high</v-icon>
+                <v-btn icon text x-large>
+                  <v-icon>mdi-volume-high</v-icon>
                 </v-btn>
               </v-list-item-action>
               <v-list-item-content>
@@ -36,10 +39,10 @@
                 ></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item>
+            <v-list-item v-if="word.v3">
               <v-list-item-action>
-                <v-btn icon>
-                  <v-icon x-large>mdi-volume-high</v-icon>
+                <v-btn icon text x-large>
+                  <v-icon>mdi-volume-high</v-icon>
                 </v-btn>
               </v-list-item-action>
               <v-list-item-content>
@@ -49,11 +52,11 @@
                 ></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
-            <v-divider />
+            <v-divider v-if="word.v2 || word.v3" />
             <v-list-item v-for="phrase in word.phrases" :key="phrase.name">
               <v-list-item-action>
-                <v-btn icon>
-                  <v-icon x-large>mdi-volume-high</v-icon>
+                <v-btn icon text x-large>
+                  <v-icon>mdi-volume-high</v-icon>
                 </v-btn>
               </v-list-item-action>
               <v-list-item-content>
@@ -95,7 +98,6 @@
         </v-card>
       </v-carousel-item>
     </v-carousel>
-    {{ word.transcription }}
   </v-list-group>
 </template>
 

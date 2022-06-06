@@ -29,7 +29,7 @@
       </v-container>
     </v-main>
 
-    <v-bottom-navigation app grow v-model="navButton">
+    <v-bottom-navigation app grow>
       <home-bottom-navigation app v-if="isTrainerPage" />
       <dictionary-bottom-navigation app v-else-if="isDictionaryPage" />
     </v-bottom-navigation>
