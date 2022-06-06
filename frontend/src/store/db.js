@@ -29,5 +29,6 @@ export default [
         translation: "Вернись",
       },
     ],
+    active: false,
   },
 ];

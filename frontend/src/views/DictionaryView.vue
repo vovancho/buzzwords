@@ -8,20 +8,31 @@
         filled
       ></v-text-field>
     </v-col>
-    <v-col cols="6" v-for="n in 6" :key="n">
-      <v-card class="pa-2">One of three columnssss {{ n }}</v-card>
+
+    <v-col cols="12">
+      <v-card>
+        <v-list>
+          <dictionary-word-item
+            v-for="word in words"
+            :word="word"
+            :key="word.name"
+          />
+        </v-list>
+      </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import DictionaryWordItem from "@/components/DictionaryWordItem";
 
 export default {
   name: "DictionaryItem",
-  computed: mapState({
-    wordsCount: (state) => state.wordsCount,
-  }),
+  components: { DictionaryWordItem },
+  computed: {
+    ...mapState(["wordsCount", "words"]),
+  },
   methods: {
     ...mapMutations(["setTitle", "setSubTitle"]),
   },

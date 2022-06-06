@@ -16,7 +16,7 @@ export default new Vuex.Store({
     wordsCount: 0,
     dictionarySearch: "",
     dictionarySearchLang: dictionary.EN_DICTIONARY_SEARCH,
-    page: pages.TRAINER_PAGE,
+    page: pages.HOME_PAGE,
     dictionarySort: dictionary.ALPHABET_SORT,
   },
   getters: {},
@@ -33,6 +33,11 @@ export default new Vuex.Store({
     },
     initWordsCount(state) {
       state.wordsCount = state.words.length;
+    },
+    setActiveWord(state, name) {
+      state.words = state.words.map(
+        (word) => (word.active = word.name === name)
+      );
     },
   },
   actions: {},

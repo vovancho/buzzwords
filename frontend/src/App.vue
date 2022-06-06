@@ -29,42 +29,40 @@
       </v-container>
     </v-main>
 
-    <v-bottom-navigation app :value="value" color="primary">
-      <v-btn>
-        <div class="font-weight-regular">
-          <small>Русский</small>
-        </div>
-        <div class="">Язык</div>
-      </v-btn>
-
-      <v-btn>
-        <span>Справка</span>
-      </v-btn>
-
-      <v-btn>
-        <div class="font-weight-regular">
-          <small>Сложный</small>
-        </div>
-        <div class="">Режим</div>
-      </v-btn>
+    <v-bottom-navigation app grow v-model="navButton">
+      <home-bottom-navigation app v-if="isTrainerPage" />
+      <dictionary-bottom-navigation app v-else-if="isDictionaryPage" />
     </v-bottom-navigation>
   </v-app>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import HomeBottomNavigation from "@/components/HomeBottomNavigation";
+import DictionaryBottomNavigation from "@/components/DictionaryBottomNavigation";
+import * as pages from "./store/pages";
 
 export default {
   name: "App",
+  components: {
+    DictionaryBottomNavigation,
+    HomeBottomNavigation,
+  },
   data: () => ({
     drawer: false,
     group: null,
     value: 1,
+    navButton: null,
   }),
-  computed: mapState({
-    title: (state) => state.title,
-    subTitle: (state) => state.subTitle,
-  }),
+  computed: {
+    ...mapState(["title", "subTitle", "page"]),
+    isTrainerPage() {
+      return this.$route.name === pages.HOME_PAGE;
+    },
+    isDictionaryPage() {
+      return this.$route.name === pages.DICTIONARY_PAGE;
+    },
+  },
   watch: {
     group() {
       this.drawer = false;

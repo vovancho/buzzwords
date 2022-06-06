@@ -38,7 +38,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API
 
 https://github.com/vovancho/buzzwords/actions
 https://vovancho.github.io/buzzwords/docs/
-
+docker-compose stop
 docker-compose up -d --build --remove-orphans
 docker-compose logs -f --tail=50 bw-vue-ui-node
 make build
