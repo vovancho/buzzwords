@@ -6,6 +6,7 @@
         single-line
         clearable
         filled
+        @input="searchWord"
       ></v-text-field>
     </v-col>
 
@@ -24,7 +25,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import DictionaryWordItem from "@/components/DictionaryWordItem";
 
 export default {
@@ -34,6 +35,7 @@ export default {
     ...mapState(["wordsCount", "words"]),
   },
   methods: {
+    ...mapActions(["searchWord"]),
     ...mapMutations(["setTitle", "setSubTitle"]),
   },
   mounted() {

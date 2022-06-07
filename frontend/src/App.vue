@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     ...mapMutations(["initWordsCount"]),
-    ...mapActions(["initSpeakLanguage"]),
+    ...mapActions(["initSpeakLanguage", "sortWordsByAlphabet"]),
     goToMain() {
       this.$router.push({ name: "home" }).catch(() => {});
     },
@@ -81,6 +81,7 @@ export default {
   created: function () {
     this.initWordsCount();
     this.initSpeakLanguage();
+    this.sortWordsByAlphabet();
   },
 };
 </script>

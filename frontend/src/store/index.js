@@ -12,6 +12,7 @@ export default new Vuex.Store({
     title: "",
     subTitle: "",
     theme: "",
+    sourceWords: words,
     words: words,
     wordsCount: 0,
     dictionarySearch: "",
@@ -33,15 +34,22 @@ export default new Vuex.Store({
       state.subTitle = "";
     },
     initWordsCount(state) {
-      state.wordsCount = state.words.length;
+      state.wordsCount = state.sourceWords.length;
     },
-    setActiveWord(state, name) {
-      state.words = state.words.map(
-        (word) => (word.active = word.name === name)
-      );
+    setWords(state, words) {
+      state.words = words;
     },
     setUtterance(state, utterance) {
       state.utterance = utterance;
+    },
+    setDictionarySort(state, dictionarySort) {
+      state.dictionarySort = dictionarySort;
+    },
+    setDictionarySearch(state, dictionarySearch) {
+      state.dictionarySearch = dictionarySearch;
+    },
+    setDictionarySearchLang(state, dictionarySearchLang) {
+      state.dictionarySearchLang = dictionarySearchLang;
     },
   },
   actions: {
@@ -67,6 +75,66 @@ export default new Vuex.Store({
       let utterance = new SpeechSynthesisUtterance();
       utterance.voice = voices.find((voice) => voice.lang === "en-US");
       commit("setUtterance", utterance);
+    },
+    toggleDictionarySort({ dispatch, commit, state }) {
+      if (state.dictionarySort === dictionary.ALPHABET_SORT) {
+        dispatch("sortWordsByDateAdded");
+        commit("setDictionarySort", dictionary.DATE_ADDED_SORT);
+      } else {
+        dispatch("sortWordsByAlphabet");
+        commit("setDictionarySort", dictionary.ALPHABET_SORT);
+      }
+    },
+    sortWordsByAlphabet({ state, commit }) {
+      let words = state.words.sort(function (word1, word2) {
+        if (word1.name > word2.name) {
+          return 1;
+        }
+        if (word1.name < word2.name) {
+          return -1;
+        }
+
+        return 0;
+      });
+
+      commit("setWords", words);
+    },
+    sortWordsByDateAdded({ state, commit }) {
+      let words = state.words.sort(function (word1, word2) {
+        if (word1.createdAt > word2.createdAt) {
+          return 1;
+        }
+        if (word1.createdAt < word2.createdAt) {
+          return -1;
+        }
+
+        return 0;
+      });
+
+      commit("setWords", words);
+    },
+    searchWord({ state, commit }, text) {
+      commit("setDictionarySearch", text);
+
+      const cyrillicPattern = /^\p{Script=Cyrillic}+$/u;
+
+      if (cyrillicPattern.test(text)) {
+        commit("setDictionarySearchLang", dictionary.RU_DICTIONARY_SEARCH);
+
+        let words = state.sourceWords.filter((word) =>
+          word.translation.includes(text.toLowerCase())
+        );
+
+        commit("setWords", words);
+      } else {
+        commit("setDictionarySearchLang", dictionary.EN_DICTIONARY_SEARCH);
+
+        let words = state.sourceWords.filter((word) =>
+          word.name.includes(text.toLowerCase())
+        );
+
+        commit("setWords", words);
+      }
     },
   },
   modules: {},

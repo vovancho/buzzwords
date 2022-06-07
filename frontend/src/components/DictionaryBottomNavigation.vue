@@ -6,19 +6,35 @@
 
     <v-spacer />
 
-    <v-btn value="dictionary.sort">
+    <v-btn value="dictionary.sort" @click="toggleDictionarySort">
       <div class="font-weight-regular">
-        <small>Сортировка</small>
+        <small>{{ sortButtonCaption }}</small>
       </div>
-      <div class="">По алфавиту</div>
+      <div class="">Сортировка</div>
     </v-btn>
   </v-sheet>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+import * as dictionary from "../store/dictionary";
+
 export default {
   name: "DictionaryBottomNavigation",
+  data: () => ({
+    sortButtonCaption: "По алфавиту",
+  }),
+  computed: {
+    ...mapState(["dictionarySort"]),
+  },
+  watch: {
+    dictionarySort: function (val) {
+      this.sortButtonCaption =
+        val === dictionary.ALPHABET_SORT ? "По алфавиту" : "По дате";
+    },
+  },
   methods: {
+    ...mapActions(["toggleDictionarySort"]),
     goToMain() {
       this.$router.push({ name: "home" }).catch(() => {});
     },
