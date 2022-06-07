@@ -18,6 +18,7 @@ export default new Vuex.Store({
     dictionarySearchLang: dictionary.EN_DICTIONARY_SEARCH,
     page: pages.HOME_PAGE,
     dictionarySort: dictionary.ALPHABET_SORT,
+    utterance: null,
   },
   getters: {},
   mutations: {
@@ -39,7 +40,34 @@ export default new Vuex.Store({
         (word) => (word.active = word.name === name)
       );
     },
+    setUtterance(state, utterance) {
+      state.utterance = utterance;
+    },
   },
-  actions: {},
+  actions: {
+    speak({ state }, text) {
+      state.utterance.text = text;
+      speechSynthesis.speak(state.utterance);
+    },
+    getVoices() {
+      return new Promise((resolve) => {
+        let synth = window.speechSynthesis;
+        let id;
+
+        id = setInterval(() => {
+          if (synth.getVoices().length !== 0) {
+            resolve(synth.getVoices());
+            clearInterval(id);
+          }
+        }, 100);
+      });
+    },
+    async initSpeakLanguage({ dispatch, commit }) {
+      let voices = await dispatch("getVoices");
+      let utterance = new SpeechSynthesisUtterance();
+      utterance.voice = voices.find((voice) => voice.lang === "en-US");
+      commit("setUtterance", utterance);
+    },
+  },
   modules: {},
 });

@@ -2,7 +2,7 @@
   <v-list-group no-action>
     <template v-slot:activator>
       <v-list-item-action>
-        <v-btn icon text x-large>
+        <v-btn icon text x-large @click="speak(word.name)">
           <v-icon>mdi-volume-high</v-icon>
         </v-btn>
       </v-list-item-action>
@@ -28,7 +28,7 @@
           <v-list>
             <v-list-item v-if="word.v2">
               <v-list-item-action>
-                <v-btn icon text x-large>
+                <v-btn icon text x-large @click="speak(word.v2.name)">
                   <v-icon>mdi-volume-high</v-icon>
                 </v-btn>
               </v-list-item-action>
@@ -41,7 +41,7 @@
             </v-list-item>
             <v-list-item v-if="word.v3">
               <v-list-item-action>
-                <v-btn icon text x-large>
+                <v-btn icon text x-large @click="speak(word.v3.name)">
                   <v-icon>mdi-volume-high</v-icon>
                 </v-btn>
               </v-list-item-action>
@@ -55,7 +55,7 @@
             <v-divider v-if="word.v2 || word.v3" />
             <v-list-item v-for="phrase in word.phrases" :key="phrase.name">
               <v-list-item-action>
-                <v-btn icon text x-large>
+                <v-btn icon text x-large @click="speak(phrase.name)">
                   <v-icon>mdi-volume-high</v-icon>
                 </v-btn>
               </v-list-item-action>
@@ -102,10 +102,15 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "DictionaryWordItem",
   props: {
     word: Object,
+  },
+  methods: {
+    ...mapActions(["speak"]),
   },
 };
 </script>

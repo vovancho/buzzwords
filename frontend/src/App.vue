@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import HomeBottomNavigation from "@/components/HomeBottomNavigation";
 import DictionaryBottomNavigation from "@/components/DictionaryBottomNavigation";
 import * as pages from "./store/pages";
@@ -70,6 +70,7 @@ export default {
   },
   methods: {
     ...mapMutations(["initWordsCount"]),
+    ...mapActions(["initSpeakLanguage"]),
     goToMain() {
       this.$router.push({ name: "home" }).catch(() => {});
     },
@@ -79,6 +80,7 @@ export default {
   },
   created: function () {
     this.initWordsCount();
+    this.initSpeakLanguage();
   },
 };
 </script>
