@@ -116,6 +116,12 @@ export default new Vuex.Store({
     searchWord({ state, commit }, text) {
       commit("setDictionarySearch", text);
 
+      if (!text) {
+        commit("setWords", state.sourceWords);
+
+        return;
+      }
+
       const cyrillicPattern = /^\p{Script=Cyrillic}+$/u;
 
       if (cyrillicPattern.test(text)) {
@@ -137,6 +143,11 @@ export default new Vuex.Store({
 
         commit("setWords", words);
       }
+    },
+    searchWordsByNames({ state }, names) {
+      return new Promise((resolve) => {
+        resolve(state.sourceWords.filter((word) => names.includes(word.name)));
+      });
     },
   },
   modules: {},

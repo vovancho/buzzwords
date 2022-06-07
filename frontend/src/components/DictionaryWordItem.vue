@@ -60,47 +60,109 @@
               </v-list-item-content>
             </v-list-item>
             <v-divider v-if="word.v2 || word.v3" />
-            <v-list-item v-for="phrase in word.phrases" :key="phrase.name">
-              <v-list-item-action class="mr-3">
-                <v-btn icon text x-large @click="speak(phrase.name)">
-                  <v-icon>mdi-volume-high</v-icon>
-                </v-btn>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title v-text="phrase.name"></v-list-item-title>
-                <v-list-item-subtitle
-                  v-text="phrase.transcription"
-                ></v-list-item-subtitle>
-              </v-list-item-content>
-
-              <v-spacer></v-spacer>
-              <v-list-item-content class="text-end">
-                <v-list-item-subtitle
-                  v-text="translationToText(phrase.translation)"
-                  style="white-space: pre-line"
-                ></v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+            <div v-if="word.phrases">
+              <v-list-item v-for="phrase in wordPhrases" :key="phrase.name">
+                <v-list-item-action class="mr-3">
+                  <v-btn icon text x-large @click="speak(phrase.name)">
+                    <v-icon>mdi-volume-high</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title v-text="phrase.name"></v-list-item-title>
+                  <v-list-item-subtitle
+                    v-text="phrase.transcription"
+                  ></v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-content class="text-end">
+                  <v-list-item-subtitle
+                    v-text="translationToText(phrase.translation)"
+                    style="white-space: pre-line"
+                  ></v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </div>
           </v-list>
         </v-card>
       </v-carousel-item>
       <v-carousel-item v-if="word.sentences">
         <v-card>
-          <v-list three-line>
-            <v-list-item
-              v-for="sentence in word.sentences"
-              :key="sentence.name"
-            >
+          <v-list three-line v-if="word.sentences">
+            <v-list-item>
               <v-list-item-content>
-                <v-list-item-title v-text="sentence.name"></v-list-item-title>
-                <v-list-item-subtitle
-                  v-text="sentence.sentence"
-                ></v-list-item-subtitle>
-                <v-list-item-subtitle
-                  class="text--darken-1"
-                  v-text="sentence.translation"
-                  style="white-space: pre-line"
-                ></v-list-item-subtitle>
+                <v-list-item-title v-text="word.name"></v-list-item-title>
+                <div
+                  v-for="sentence in word.sentences"
+                  :key="sentence.sentence"
+                >
+                  <v-list-item-subtitle
+                    v-text="sentence.sentence"
+                  ></v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    class="text--darken-1"
+                    v-text="sentence.translation"
+                    style="white-space: pre-line"
+                  ></v-list-item-subtitle>
+                </div>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+          <v-list three-line v-if="word && word.v2 && word.v2.sentences">
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title v-text="word.v2.name"></v-list-item-title>
+                <div
+                  v-for="sentence in word.v2.sentences"
+                  :key="sentence.sentence"
+                >
+                  <v-list-item-subtitle
+                    v-text="sentence.sentence"
+                  ></v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    class="text--darken-1"
+                    v-text="sentence.translation"
+                    style="white-space: pre-line"
+                  ></v-list-item-subtitle>
+                </div>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+          <v-list three-line v-if="word && word.v3 && word.v3.sentences">
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title v-text="word.v3.name"></v-list-item-title>
+                <div
+                  v-for="sentence in word.v3.sentences"
+                  :key="sentence.sentence"
+                >
+                  <v-list-item-subtitle
+                    v-text="sentence.sentence"
+                  ></v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    class="text--darken-1"
+                    v-text="sentence.translation"
+                    style="white-space: pre-line"
+                  ></v-list-item-subtitle>
+                </div>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+          <v-list three-line v-if="word && word.phrases">
+            <v-list-item v-for="phrase in wordPhrases" :key="phrase.name">
+              <v-list-item-content v-if="phrase.sentences">
+                <v-list-item-title v-text="phrase.name"></v-list-item-title>
+                <div
+                  v-for="sentence in phrase.sentences"
+                  :key="sentence.sentence"
+                >
+                  <v-list-item-subtitle
+                    v-text="sentence.sentence"
+                  ></v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    class="text--darken-1"
+                    v-text="sentence.translation"
+                    style="white-space: pre-line"
+                  ></v-list-item-subtitle>
+                </div>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -111,16 +173,23 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "DictionaryWordItem",
   props: {
     word: Object,
   },
-  computed: {},
+  computed: {
+    ...mapState(["sourceWords"]),
+    wordPhrases() {
+      return this.sourceWords.filter((word) =>
+        this.word.phrases.includes(word.name)
+      );
+    },
+  },
   methods: {
-    ...mapActions(["speak"]),
+    ...mapActions(["speak", "searchWordsByNames"]),
     translationToText(translation) {
       return translation.join(", ");
     },
