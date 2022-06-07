@@ -122,7 +122,9 @@ export default new Vuex.Store({
         commit("setDictionarySearchLang", dictionary.RU_DICTIONARY_SEARCH);
 
         let words = state.sourceWords.filter((word) =>
-          word.translation.includes(text.toLowerCase())
+          word.translation.filter((transWord) =>
+            transWord.includes(text.toLowerCase())
+          )
         );
 
         commit("setWords", words);

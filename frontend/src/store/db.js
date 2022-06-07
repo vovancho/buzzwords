@@ -4,14 +4,14 @@ export default [
   {
     name: "almost",
     transcription: "ˈɔlˌmoʊst",
-    translation: "почти",
+    translation: ["почти"],
     createdAt: "2022-06-03 07:26:55",
     type: types.SIMPLE_TYPE,
   },
   {
     name: "come",
     transcription: "kām",
-    translation: "прийти",
+    translation: ["прийти"],
     createdAt: "2022-06-03 07:25:55",
     type: types.IRREGULAR_VERB_TYPE,
     v2: {
@@ -33,14 +33,14 @@ export default [
       {
         name: "come back",
         transcription: "kʌm bæk",
-        translation: "Вернись",
+        translation: ["Вернись"],
       },
     ],
   },
   {
     name: "break down",
     transcription: "breɪk daʊn",
-    translation: "разрушить, сдаться, разломать",
+    translation: ["разрушить", "сдаться", "разломать"],
     createdAt: "2022-06-03 07:25:55",
     type: types.PHRASAL_VERB_TYPE,
     v2: {

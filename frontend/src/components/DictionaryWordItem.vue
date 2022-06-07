@@ -6,7 +6,7 @@
       ></div>
     </template>
     <template v-slot:activator>
-      <v-list-item-action>
+      <v-list-item-action class="mr-3">
         <v-btn icon text x-large @click.stop="speak(word.name)">
           <v-icon>mdi-volume-high</v-icon>
         </v-btn>
@@ -18,10 +18,9 @@
         ></v-list-item-subtitle>
       </v-list-item-content>
 
-      <v-spacer></v-spacer>
       <v-list-item-content class="text-end">
         <v-list-item-subtitle
-          v-text="word.translation"
+          v-text="translationToText(word.translation)"
           style="white-space: pre-line"
         ></v-list-item-subtitle>
       </v-list-item-content>
@@ -35,7 +34,7 @@
         <v-card>
           <v-list>
             <v-list-item v-if="word.v2">
-              <v-list-item-action>
+              <v-list-item-action class="mr-3">
                 <v-btn icon text x-large @click="speak(word.v2.name)">
                   <v-icon>mdi-volume-high</v-icon>
                 </v-btn>
@@ -48,7 +47,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-list-item v-if="word.v3">
-              <v-list-item-action>
+              <v-list-item-action class="mr-3">
                 <v-btn icon text x-large @click="speak(word.v3.name)">
                   <v-icon>mdi-volume-high</v-icon>
                 </v-btn>
@@ -62,7 +61,7 @@
             </v-list-item>
             <v-divider v-if="word.v2 || word.v3" />
             <v-list-item v-for="phrase in word.phrases" :key="phrase.name">
-              <v-list-item-action>
+              <v-list-item-action class="mr-3">
                 <v-btn icon text x-large @click="speak(phrase.name)">
                   <v-icon>mdi-volume-high</v-icon>
                 </v-btn>
@@ -77,7 +76,7 @@
               <v-spacer></v-spacer>
               <v-list-item-content class="text-end">
                 <v-list-item-subtitle
-                  v-text="phrase.translation"
+                  v-text="translationToText(phrase.translation)"
                   style="white-space: pre-line"
                 ></v-list-item-subtitle>
               </v-list-item-content>
@@ -119,8 +118,12 @@ export default {
   props: {
     word: Object,
   },
+  computed: {},
   methods: {
     ...mapActions(["speak"]),
+    translationToText(translation) {
+      return translation.join(", ");
+    },
   },
 };
 </script>
