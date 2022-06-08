@@ -2206,11 +2206,19 @@ export default [
     type: types.PHRASAL_VERB_TYPE,
   },
   {
-    name: "wear (wore V2, worn V3)",
-    transcription: "wɛr (wɔr V2, wɔrn V3)",
+    name: "wear",
+    transcription: "wɛr",
     translation: ["носить"],
     createdAt: "2022-06-07 07:26:55",
-    type: types.SIMPLE_TYPE,
+    type: types.IRREGULAR_VERB_TYPE,
+    v2: {
+      name: "wore",
+      transcription: "wɔr",
+    },
+    v3: {
+      name: "worn",
+      transcription: "wɔrn",
+    },
   },
   {
     name: "whatever",
