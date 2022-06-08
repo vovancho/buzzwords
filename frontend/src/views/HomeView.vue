@@ -83,11 +83,12 @@ export default {
     listSelect(selectedIndexes) {
       if (selectedIndexes.length === 1) {
         let selectedWord = this.list[selectedIndexes[0]];
+        let rightWord = selectedWord;
         console.log(JSON.stringify([selectedIndexes, this.selectedItems]));
 
         if (!selectedWord.selected) {
           let selIndex = null;
-          let rightWord = this.list.find(function (word, idx) {
+          rightWord = this.list.find(function (word, idx) {
             if (word.selected) {
               selIndex = idx;
 
@@ -105,6 +106,7 @@ export default {
 
         let $that = this;
 
+        $that.speak(rightWord.name);
         setTimeout(function () {
           $that.selectedItems = [];
           $that.triggerList();
