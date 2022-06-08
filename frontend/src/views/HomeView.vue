@@ -60,7 +60,7 @@ export default {
 
       while (this.list.length < 6) {
         let word =
-          this.sourceWords[Math.floor(Math.random() * this.wordsCount + 1)];
+          this.sourceWords[Math.floor(Math.random() * this.wordsCount)];
 
         if (i === selectedWordIndex) {
           this.selectedWord = word;
