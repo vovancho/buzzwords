@@ -10,13 +10,6 @@ export default new Vuetify({
       customProperties: true,
     },
     dark: true,
-    css: {
-      loaderOptions: {
-        sass: {
-          data: `@import "~@/sass/variables.scss"`,
-        },
-      },
-    },
   },
   lang: {
     locales: { ru },
