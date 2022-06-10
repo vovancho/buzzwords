@@ -8,9 +8,17 @@ export default {
     mode: modes.EASY_MODE,
     correctWord: null,
     selectedWords: [],
-    wordBuffer: [],
+    wordBuffer1: [],
+    wordBuffer2: [],
+    wordBuffer3: [],
   },
-  getters: {},
+  getters: {
+    getCorrectWordIndex: (state) => {
+      return state.selectedWords.findIndex(
+        (word) => word.name === state.correctWord.name
+      );
+    },
+  },
   mutations: {
     toggleLanguage(state) {
       state.language =
@@ -36,32 +44,59 @@ export default {
     addSelectedWord(state, selectedWord) {
       state.selectedWords.push(selectedWord);
     },
-    setWordBuffer(state, wordBuffer) {
-      state.wordBuffer = wordBuffer;
+    setWordBuffer1(state, wordBuffer) {
+      state.wordBuffer1 = wordBuffer;
+    },
+    addWordBuffer(state, { word, num }) {
+      console.log(word, num);
+      switch (num) {
+        case 3:
+          state.wordBuffer3.push(word);
+          break;
+        case 2:
+          state.wordBuffer2.push(word);
+          break;
+        default:
+          state.wordBuffer1.push(word);
+          break;
+      }
     },
     resetExercise(state) {
       state.correctWord = null;
+      state.wordBuffer1 = [];
+      state.wordBuffer2 = [];
+      state.wordBuffer3 = [];
+    },
+    resetSelectedWords(state) {
       state.selectedWords = [];
-      state.wordBuffer = [];
     },
     shuffleSelectedWord(state) {
       state.selectedWords.sort(() => Math.random() - 0.5);
     },
+    shuffleWordBuffer1(state) {
+      state.wordBuffer1.sort(() => Math.random() - 0.5);
+    },
   },
   actions: {
     resetExercise({ commit, rootState }) {
-      commit("resetExercise");
-      commit("setWordBuffer", rootState.dictionary.sourceWords);
+      return new Promise((resolve) => {
+        commit("resetExercise");
+        commit("setWordBuffer1", rootState.dictionary.sourceWords, 1);
+        commit("shuffleWordBuffer1");
+
+        resolve();
+      });
     },
-    triggerNewExerciseItem({ state, commit }) {
-      while (state.selectedWords.length < 6 && state.wordBuffer.length > 0) {
-        const selected = state.wordBuffer.splice(
-          Math.floor(Math.random() * state.wordBuffer.length),
-          1
-        );
+    async triggerNewExerciseItem({ state, commit }) {
+      commit("resetSelectedWords");
+
+      while (state.selectedWords.length < 6 && state.wordBuffer1.length > 0) {
+        let selected = state.wordBuffer1.splice(0, 1);
 
         if (selected.length) {
-          commit("addSelectedWord", selected.shift());
+          selected = selected.shift();
+          selected.bufferNum = 1;
+          commit("addSelectedWord", selected);
         }
       }
 
@@ -74,6 +109,43 @@ export default {
       commit("addSelectedWord", correctWord);
       commit("setCorrectWord", correctWord);
       commit("shuffleSelectedWord", correctWord);
+    },
+    async applyCorrectAnswer({ state, commit, dispatch }) {
+      while (state.selectedWords.length > 0) {
+        let selected = state.selectedWords.splice(0, 1);
+
+        if (selected.length) {
+          selected = selected.shift();
+
+          if (selected.isCorrect) {
+            if (selected.bufferNum < 3) {
+              commit("addWordBuffer", {
+                word: selected,
+                num: selected.bufferNum + 1,
+              });
+            }
+          } else {
+            commit("addWordBuffer", {
+              word: selected,
+              num: selected.bufferNum,
+            });
+          }
+        }
+      }
+
+      dispatch("triggerNewExerciseItem");
+    },
+    async applyIncorrectAnswer({ state, commit, dispatch }) {
+      while (state.selectedWords.length > 0) {
+        let selected = state.selectedWords.splice(0, 1);
+
+        if (selected.length) {
+          selected = selected.shift();
+          commit("addWordBuffer", { word: selected, num: selected.bufferNum });
+        }
+      }
+
+      dispatch("triggerNewExerciseItem");
     },
   },
   modules: {},

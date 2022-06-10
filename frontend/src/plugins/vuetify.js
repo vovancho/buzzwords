@@ -9,7 +9,6 @@ export default new Vuetify({
     options: {
       customProperties: true,
     },
-    dark: true,
     css: {
       loaderOptions: {
         sass: {

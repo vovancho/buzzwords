@@ -16,11 +16,12 @@
         </v-list-item-content>
       </v-list-item>
     </v-list-item-group>
+    <div v-if="lock" @click="nextClick" class="lock-overlay"></div>
   </v-list>
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapState } from "vuex";
+import { mapGetters, mapMutations, mapState, mapActions } from "vuex";
 
 export default {
   name: "EasyWordList",
@@ -33,16 +34,14 @@ export default {
   computed: {
     ...mapState("exercise", ["selectedWords", "correctWord"]),
     ...mapGetters("dictionary", ["translationToText"]),
+    ...mapGetters("exercise", ["getCorrectWordIndex"]),
   },
   methods: {
     ...mapMutations("dictionary", ["speak"]),
-    itemsSelected() {
-      const correctIndex = this.selectedWords.findIndex(
-        (word) => word.name === this.correctWord.name
-      );
-
-      if (!this.selectedItems.includes(correctIndex)) {
-        this.selectedItems.push(correctIndex);
+    ...mapActions("exercise", ["applyCorrectAnswer", "applyIncorrectAnswer"]),
+    async itemsSelected() {
+      if (!this.selectedItems.includes(this.getCorrectWordIndex)) {
+        this.selectedItems.push(this.getCorrectWordIndex);
       }
 
       this.speak(this.correctWord.name);
@@ -50,8 +49,25 @@ export default {
     itemClick() {
       this.lock = true;
     },
+    nextClick() {
+      if (this.selectedItems.length === 1) {
+        this.applyCorrectAnswer();
+      } else {
+        this.applyIncorrectAnswer();
+      }
+
+      this.selectedItems = [];
+      this.lock = false;
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.lock-overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+</style>

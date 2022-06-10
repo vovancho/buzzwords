@@ -20,9 +20,9 @@ export default {
   methods: {
     ...mapActions("exercise", ["triggerNewExerciseItem", "resetExercise"]),
   },
-  mounted() {
-    this.resetExercise();
-    this.triggerNewExerciseItem();
+  async mounted() {
+    await this.resetExercise();
+    await this.triggerNewExerciseItem();
   },
 };
 </script>
