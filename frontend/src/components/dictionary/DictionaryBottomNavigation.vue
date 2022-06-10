@@ -15,15 +15,13 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import * as sort from "@/store/dictionary/sort";
-
-const { mapMutations, mapState } = createNamespacedHelpers("dictionary");
 
 export default {
   name: "DictionaryBottomNavigation",
   computed: {
-    ...mapState(["dictionarySort"]),
+    ...mapState("dictionary", ["dictionarySort"]),
     dictionarySortTitle() {
       return this.dictionarySort === sort.ALPHABET_SORT
         ? "По алфавиту"
@@ -36,7 +34,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["toggleDictionarySort"]),
+    ...mapMutations("dictionary", ["toggleDictionarySort"]),
   },
 };
 </script>

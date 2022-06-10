@@ -5,7 +5,9 @@
       <v-spacer v-if="title" />
       <v-toolbar-title v-if="title">
         <div class="text-h6 text-center">{{ title }}</div>
-        <div class="text-caption" v-if="subTitle">{{ subTitle }}</div>
+        <div class="text-caption text-center" v-if="subTitle">
+          {{ subTitle }}
+        </div>
       </v-toolbar-title>
       <v-spacer v-if="title" />
     </v-app-bar>
@@ -44,7 +46,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters, mapState, mapActions } from "vuex";
 
 export default {
   name: "App",
@@ -54,6 +56,13 @@ export default {
   }),
   computed: {
     ...mapState(["title", "subTitle"]),
+    ...mapGetters("dictionary", ["wordsCount"]),
+  },
+  methods: {
+    ...mapActions("dictionary", ["initSpeakLanguage"]),
+  },
+  created: function () {
+    this.initSpeakLanguage();
   },
 };
 </script>

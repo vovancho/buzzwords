@@ -26,16 +26,14 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import * as languages from "@/store/exercise/languages";
 import * as modes from "@/store/exercise/modes";
-
-const { mapMutations, mapState } = createNamespacedHelpers("exercise");
 
 export default {
   name: "ExerciseBottomNavigation",
   computed: {
-    ...mapState(["language", "mode"]),
+    ...mapState("exercise", ["language", "mode"]),
     languageTitle() {
       return this.language === languages.EN_LANGUAGE ? "EN" : "RU";
     },
@@ -47,7 +45,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["toggleLanguage", "toggleMode"]),
+    ...mapMutations("exercise", ["toggleLanguage", "toggleMode"]),
   },
 };
 </script>

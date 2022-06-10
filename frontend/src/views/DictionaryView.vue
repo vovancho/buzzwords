@@ -9,17 +9,20 @@
 
 <script>
 import DictionaryBottomNavigation from "@/components/dictionary/DictionaryBottomNavigation";
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
   name: "DictionaryView",
   components: { DictionaryBottomNavigation },
+  computed: {
+    ...mapGetters("dictionary", ["wordsCount"]),
+  },
   methods: {
     ...mapMutations(["setTitle", "setSubTitle"]),
   },
   mounted() {
     this.setTitle("Словарь");
-    // this.setSubTitle(this.$tc("wordsCount", this.wordsCount));
+    this.setSubTitle(this.$tc("wordsCount", this.wordsCount));
   },
 };
 </script>
