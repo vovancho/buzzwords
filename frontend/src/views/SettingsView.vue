@@ -30,9 +30,10 @@ export default {
       localStorage.setItem("darkTheme", this.$vuetify.theme.dark.toString());
     },
   },
-  created() {
+  mounted() {
     this.setTitle("Настройки");
-
+  },
+  created() {
     this.theme = this.$vuetify.theme.dark;
   },
 };

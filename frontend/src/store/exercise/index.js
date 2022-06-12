@@ -16,11 +16,13 @@ export default {
     getCorrectWordIndex: (state) => {
       return state.correctWord.name;
     },
-    getCorrectWordTitle: (state) => {
+    getCorrectWordTitle: (state, getters, rootState, rootGetters) => {
       if (state.language === languages.EN_LANGUAGE) {
         return state.correctWord.name;
       } else {
-        return state.correctWord.translation.join(", ");
+        return rootGetters["dictionary/translationToText"](
+          state.correctWord.translation
+        );
       }
     },
     isEmptyBuffers: (state) => {
@@ -37,6 +39,11 @@ export default {
         state.language === languages.EN_LANGUAGE
           ? languages.RU_LANGUAGE
           : languages.EN_LANGUAGE;
+
+      localStorage.setItem("exercise.language", state.language);
+    },
+    setLanguage(state, language) {
+      state.language = language;
     },
     toggleMode(state) {
       state.mode =
@@ -94,6 +101,10 @@ export default {
         commit("resetExercise");
         commit("setWordBuffer1", rootState.dictionary.sourceWords);
         commit("shuffleWordBuffer1");
+        commit(
+          "setLanguage",
+          localStorage.getItem("exercise.language") || languages.EN_LANGUAGE
+        );
 
         resolve();
       });

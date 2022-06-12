@@ -8,7 +8,7 @@
           v-text="correctWord.transcription"
         ></v-list-item-subtitle>
       </v-list-item-content>
-      <v-list-item-action>
+      <v-list-item-action v-if="isEnLang">
         <v-btn icon text x-large @click.stop="speak(correctWord.name)">
           <v-icon>mdi-volume-high</v-icon>
         </v-btn>

@@ -12,7 +12,7 @@
         <v-list-item-content>
           <v-list-item-title
             class="text-center"
-            v-text="translationToText(word.translation)"
+            v-text="isEnLang ? translationToText(word.translation) : word.name"
           ></v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -23,6 +23,7 @@
 
 <script>
 import { mapGetters, mapMutations, mapState, mapActions } from "vuex";
+import * as languages from "@/store/exercise/languages";
 
 export default {
   name: "EasyWordList",
@@ -33,9 +34,12 @@ export default {
     };
   },
   computed: {
-    ...mapState("exercise", ["selectedWords", "correctWord"]),
+    ...mapState("exercise", ["selectedWords", "correctWord", "language"]),
     ...mapGetters("dictionary", ["translationToText"]),
     ...mapGetters("exercise", ["getCorrectWordIndex"]),
+    isEnLang() {
+      return this.language === languages.EN_LANGUAGE;
+    },
   },
   methods: {
     ...mapMutations("dictionary", ["speak"]),

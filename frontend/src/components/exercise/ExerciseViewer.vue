@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import ChosenWord from "@/components/exercise/ChosenWord";
 import EasyWordList from "@/components/exercise/EasyWordList";
 
@@ -28,13 +28,6 @@ export default {
   components: { EasyWordList, ChosenWord },
   computed: {
     ...mapState("exercise", ["correctWord", "selectedWords"]),
-  },
-  methods: {
-    ...mapActions("exercise", ["triggerNewExerciseItem", "resetExercise"]),
-  },
-  async created() {
-    await this.resetExercise();
-    await this.triggerNewExerciseItem();
   },
 };
 </script>
