@@ -16,6 +16,13 @@ export default {
     getCorrectWordIndex: (state) => {
       return state.correctWord.name;
     },
+    getCorrectWordTitle: (state) => {
+      if (state.language === languages.EN_LANGUAGE) {
+        return state.correctWord.name;
+      } else {
+        return state.correctWord.translation.join(", ");
+      }
+    },
     isEmptyBuffers: (state) => {
       return (
         state.wordBuffer1.length === 0 &&

@@ -6,7 +6,6 @@
         v-model="theme"
         label="Темная тема"
       ></v-switch>
-      <v-btn> Normal </v-btn>
     </v-container>
     <settings-bottom-navigation />
   </v-sheet>

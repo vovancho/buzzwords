@@ -8,7 +8,7 @@
         left
         class="chosen-word"
       >
-        <chosen-word :word="correctWord" />
+        <chosen-word />
       </v-badge>
 
       <v-divider></v-divider>
@@ -32,7 +32,7 @@ export default {
   methods: {
     ...mapActions("exercise", ["triggerNewExerciseItem", "resetExercise"]),
   },
-  async mounted() {
+  async created() {
     await this.resetExercise();
     await this.triggerNewExerciseItem();
   },
