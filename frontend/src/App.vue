@@ -63,6 +63,12 @@ export default {
   },
   created: function () {
     this.initSpeakLanguage();
+
+    const theme = localStorage.getItem("darkTheme");
+
+    if (theme) {
+      this.$vuetify.theme.dark = theme === "true";
+    }
   },
 };
 </script>

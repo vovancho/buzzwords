@@ -34,12 +34,7 @@ export default {
   created() {
     this.setTitle("Настройки");
 
-    const theme = localStorage.getItem("darkTheme");
-
-    if (theme) {
-      this.theme = theme === "true";
-      this.$vuetify.theme.dark = this.theme;
-    }
+    this.theme = this.$vuetify.theme.dark;
   },
 };
 </script>

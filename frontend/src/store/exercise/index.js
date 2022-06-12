@@ -14,8 +14,13 @@ export default {
   },
   getters: {
     getCorrectWordIndex: (state) => {
-      return state.selectedWords.findIndex(
-        (word) => word.name === state.correctWord.name
+      return state.correctWord.name;
+    },
+    isEmptyBuffers: (state) => {
+      return (
+        state.wordBuffer1.length === 0 &&
+        state.wordBuffer2.length === 0 &&
+        state.wordBuffer3.length === 0
       );
     },
   },
@@ -48,7 +53,6 @@ export default {
       state.wordBuffer1 = wordBuffer;
     },
     addWordBuffer(state, { word, num }) {
-      console.log(word, num);
       switch (num) {
         case 3:
           state.wordBuffer3.push(word);
@@ -81,34 +85,30 @@ export default {
     resetExercise({ commit, rootState }) {
       return new Promise((resolve) => {
         commit("resetExercise");
-        commit("setWordBuffer1", rootState.dictionary.sourceWords, 1);
+        commit("setWordBuffer1", rootState.dictionary.sourceWords);
         commit("shuffleWordBuffer1");
 
         resolve();
       });
     },
-    async triggerNewExerciseItem({ state, commit }) {
+    async triggerNewExerciseItem({ state, dispatch, commit, getters }) {
       commit("resetSelectedWords");
 
-      while (state.selectedWords.length < 6 && state.wordBuffer1.length > 0) {
-        let selected = state.wordBuffer1.splice(0, 1);
-
-        if (selected.length) {
-          selected = selected.shift();
-          selected.bufferNum = 1;
-          commit("addSelectedWord", selected);
-        }
+      while (state.selectedWords.length < 6 && !getters.isEmptyBuffers) {
+        commit("addSelectedWord", await dispatch("getWord"));
       }
 
-      let correctWord = state.selectedWords.splice(
-        Math.floor(Math.random() * state.selectedWords.length),
-        1
-      );
-      correctWord = correctWord.length ? correctWord.shift() : null;
+      if (state.selectedWords.length) {
+        let correctWord = state.selectedWords.splice(
+          Math.floor(Math.random() * state.selectedWords.length),
+          1
+        );
+        correctWord = correctWord.length ? correctWord.shift() : null;
 
-      commit("addSelectedWord", correctWord);
-      commit("setCorrectWord", correctWord);
-      commit("shuffleSelectedWord", correctWord);
+        commit("addSelectedWord", correctWord);
+        commit("setCorrectWord", correctWord);
+        commit("shuffleSelectedWord", correctWord);
+      }
     },
     async applyCorrectAnswer({ state, commit, dispatch }) {
       while (state.selectedWords.length > 0) {
@@ -146,6 +146,78 @@ export default {
       }
 
       dispatch("triggerNewExerciseItem");
+    },
+    async getWord({ dispatch }) {
+      let bufferNum = 1;
+      const probability = Math.random() * 101;
+
+      switch (true) {
+        case probability >= 95:
+          bufferNum = 3;
+          break;
+        case probability >= 85 && probability < 95:
+          bufferNum = 2;
+          break;
+      }
+
+      return await dispatch("getWordInternal", {
+        bufferNum,
+      });
+    },
+    async getWordInternal({ state, dispatch }, { bufferNum, isFirst = true }) {
+      return new Promise((resolve) => {
+        let selected;
+
+        switch (bufferNum) {
+          case 3:
+            selected = state.wordBuffer3.splice(0, 1);
+
+            if (selected.length) {
+              selected = selected.shift();
+              selected.bufferNum = 3;
+
+              resolve(selected);
+            } else if (isFirst) {
+              dispatch("getWordInternal", {
+                bufferNum: 1,
+                isFirst: false,
+              }).then((selected) => resolve(selected));
+            } else {
+              resolve(null);
+            }
+
+            break;
+          case 2:
+            selected = state.wordBuffer2.splice(0, 1);
+
+            if (selected.length) {
+              selected = selected.shift();
+              selected.bufferNum = 2;
+
+              resolve(selected);
+            } else {
+              dispatch("getWordInternal", {
+                bufferNum: isFirst ? 1 : 3,
+                isFirst: false,
+              }).then((selected) => resolve(selected));
+            }
+            break;
+          default:
+            selected = state.wordBuffer1.splice(0, 1);
+
+            if (selected.length) {
+              selected = selected.shift();
+              selected.bufferNum = 1;
+
+              resolve(selected);
+            } else {
+              dispatch("getWordInternal", {
+                bufferNum: 2,
+                isFirst: false,
+              }).then((selected) => resolve(selected));
+            }
+        }
+      });
     },
   },
   modules: {},

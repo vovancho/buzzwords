@@ -12,7 +12,7 @@ export default new Vuetify({
     css: {
       loaderOptions: {
         sass: {
-          data: `@import "~@/sass/variables.scss"`,
+          data: `@import "~@/sass/variables.sass"`,
         },
       },
     },

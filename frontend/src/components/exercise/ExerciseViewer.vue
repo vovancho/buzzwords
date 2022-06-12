@@ -1,8 +1,20 @@
 <template>
   <v-card>
-    <chosen-word :word="correctWord" />
-    <v-divider></v-divider>
-    <easy-word-list />
+    <div v-if="selectedWords.length > 0 && correctWord">
+      <v-badge
+        color="info"
+        overlap
+        :content="correctWord.bufferNum"
+        left
+        class="chosen-word"
+      >
+        <chosen-word :word="correctWord" />
+      </v-badge>
+
+      <v-divider></v-divider>
+      <easy-word-list />
+    </div>
+    <div v-else><v-card-title>Нет слов</v-card-title></div>
   </v-card>
 </template>
 
@@ -15,7 +27,7 @@ export default {
   name: "ExerciseViewer",
   components: { EasyWordList, ChosenWord },
   computed: {
-    ...mapState("exercise", ["correctWord"]),
+    ...mapState("exercise", ["correctWord", "selectedWords"]),
   },
   methods: {
     ...mapActions("exercise", ["triggerNewExerciseItem", "resetExercise"]),
@@ -27,4 +39,7 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="sass">
+.chosen-word
+  width: 100%
+</style>

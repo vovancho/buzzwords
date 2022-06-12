@@ -2,10 +2,11 @@
   <v-list rounded>
     <v-list-item-group multiple @change="itemsSelected" v-model="selectedItems">
       <v-list-item
-        v-for="word in selectedWords"
-        :key="word.name"
+        v-for="(word, index) in selectedWords"
+        :key="index"
         :color="word.isCorrect ? 'light-green' : 'red'"
         :disabled="lock"
+        :value="word.name"
         @click="itemClick"
       >
         <v-list-item-content>
