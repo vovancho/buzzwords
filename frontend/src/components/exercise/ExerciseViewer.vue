@@ -12,7 +12,8 @@
       </v-badge>
 
       <v-divider></v-divider>
-      <easy-word-list />
+      <easy-word-list v-if="isEasyMode" />
+      <hard-word-list v-else />
     </div>
     <div v-else><v-card-title>Нет слов</v-card-title></div>
   </v-card>
@@ -22,12 +23,17 @@
 import { mapState } from "vuex";
 import ChosenWord from "@/components/exercise/ChosenWord";
 import EasyWordList from "@/components/exercise/EasyWordList";
+import * as modes from "@/store/exercise/modes";
+import HardWordList from "@/components/exercise/HardWordList";
 
 export default {
   name: "ExerciseViewer",
-  components: { EasyWordList, ChosenWord },
+  components: { HardWordList, EasyWordList, ChosenWord },
   computed: {
-    ...mapState("exercise", ["correctWord", "selectedWords"]),
+    ...mapState("exercise", ["correctWord", "selectedWords", "mode"]),
+    isEasyMode() {
+      return this.mode === modes.EASY_MODE;
+    },
   },
 };
 </script>

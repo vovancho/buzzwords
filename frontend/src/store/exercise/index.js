@@ -7,10 +7,16 @@ export default {
     language: languages.EN_LANGUAGE,
     mode: modes.EASY_MODE,
     correctWord: null,
+    searchWord: "",
     selectedWords: [],
     wordBuffer1: [],
     wordBuffer2: [],
     wordBuffer3: [],
+    recognizer: {
+      recognition: null,
+      isRecognizing: false,
+      transcript: "",
+    },
   },
   getters: {
     getCorrectWordIndex: (state) => {
@@ -39,15 +45,37 @@ export default {
         state.language === languages.EN_LANGUAGE
           ? languages.RU_LANGUAGE
           : languages.EN_LANGUAGE;
+      state.recognizer.recognition.lang =
+        state.language === languages.EN_LANGUAGE
+          ? languages.RU_LANGUAGE
+          : languages.EN_LANGUAGE;
 
       localStorage.setItem("exercise.language", state.language);
     },
     setLanguage(state, language) {
       state.language = language;
+      state.recognizer.recognition.lang =
+        language === languages.EN_LANGUAGE
+          ? languages.RU_LANGUAGE
+          : languages.EN_LANGUAGE;
+    },
+    setMode(state, mode) {
+      state.mode = mode;
     },
     toggleMode(state) {
       state.mode =
         state.mode === modes.EASY_MODE ? modes.HARD_MODE : modes.EASY_MODE;
+
+      localStorage.setItem("exercise.mode", state.mode);
+    },
+    updateSearchWord(state, searchText) {
+      state.searchWord = searchText;
+
+      state.selectedWords = state.selectedWords.map(function (word) {
+        word.visible = Boolean(word.name.match(new RegExp(searchText), "ui"));
+
+        return word;
+      });
     },
     setCorrectWord(state, correctWord) {
       state.correctWord = correctWord;
@@ -94,6 +122,28 @@ export default {
     shuffleWordBuffer1(state) {
       state.wordBuffer1.sort(() => Math.random() - 0.5);
     },
+    setRecognition(state, recognition) {
+      state.recognizer.recognition = recognition;
+    },
+    startRecognition(state) {
+      state.searchWord = "";
+      state.recognizer.recognition.onresult = (event) => {
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+          var result = event.results[i];
+          if (result.isFinal) {
+            state.searchWord += result[0].transcript;
+            state.recognizer.recognition.abort();
+            state.recognizer.isRecognizing = false;
+          }
+        }
+      };
+      state.recognizer.recognition.start();
+      state.recognizer.isRecognizing = true;
+    },
+    stopRecognition(state) {
+      state.recognizer.recognition.abort();
+      state.recognizer.isRecognizing = false;
+    },
   },
   actions: {
     resetExercise({ commit, rootState }) {
@@ -105,6 +155,10 @@ export default {
           "setLanguage",
           localStorage.getItem("exercise.language") || languages.EN_LANGUAGE
         );
+        commit(
+          "setMode",
+          localStorage.getItem("exercise.mode") || modes.EASY_MODE
+        );
 
         resolve();
       });
@@ -113,7 +167,9 @@ export default {
       commit("resetSelectedWords");
 
       while (state.selectedWords.length < 6 && !getters.isEmptyBuffers) {
-        commit("addSelectedWord", await dispatch("getWord"));
+        let word = await dispatch("getWord");
+        word.visible = false;
+        commit("addSelectedWord", word);
       }
 
       if (state.selectedWords.length) {
@@ -236,6 +292,27 @@ export default {
             }
         }
       });
+    },
+    async initRecognizer({ commit }) {
+      let recognition = new (window.SpeechRecognition ||
+        window.webkitSpeechRecognition ||
+        window.mozSpeechRecognition ||
+        window.msSpeechRecognition)();
+
+      const language =
+        localStorage.getItem("exercise.language") || languages.EN_LANGUAGE;
+
+      recognition.lang =
+        language === languages.EN_LANGUAGE
+          ? languages.RU_LANGUAGE
+          : languages.EN_LANGUAGE;
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        recognition.continuous = true;
+        recognition.interimResults = true;
+      }
+
+      commit("setRecognition", recognition);
     },
   },
   modules: {},
