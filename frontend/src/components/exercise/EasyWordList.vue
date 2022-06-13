@@ -29,6 +29,7 @@ export default {
   name: "EasyWordList",
   data() {
     return {
+      timer: null,
       selectedItems: [],
       lock: false,
     };
@@ -53,8 +54,14 @@ export default {
     },
     itemClick() {
       this.lock = true;
+
+      this.timer = setTimeout(() => this.nextClick(), 3000);
     },
     nextClick() {
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+
       if (this.selectedItems.length === 1) {
         this.applyCorrectAnswer();
       } else {

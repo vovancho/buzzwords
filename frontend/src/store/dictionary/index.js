@@ -5,8 +5,10 @@ export default {
   namespaced: true,
   state: {
     sourceWords: words,
+    searchedWords: [],
     dictionarySort: sort.ALPHABET_SORT,
     utterance: null,
+    searchWord: "",
   },
   getters: {
     wordsCount: (state) => {
@@ -30,8 +32,17 @@ export default {
       state.utterance.text = text;
       speechSynthesis.speak(state.utterance);
     },
+    setSearchWord(state, searchWord) {
+      state.searchWord = searchWord;
+    },
+    setSearchedWords(state, searchedWords) {
+      state.searchedWords = searchedWords;
+    },
   },
   actions: {
+    updateSearchWord({ commit }, searchWord) {
+      commit("setSearchWord", searchWord);
+    },
     getVoices() {
       return new Promise((resolve) => {
         let synth = window.speechSynthesis;
@@ -50,6 +61,18 @@ export default {
       let utterance = new SpeechSynthesisUtterance();
       utterance.voice = voices.find((voice) => voice.lang === "en-US");
       commit("setUtterance", utterance);
+    },
+    async initDictionary({ commit, state }) {
+      commit("setSearchedWords", [...state.sourceWords]);
+      commit("setSearchWord", "");
+    },
+    async triggerSearchWord({ commit, state }) {
+      commit(
+        "setSearchedWords",
+        state.sourceWords.filter((word) =>
+          word.name.startsWith(state.searchWord)
+        )
+      );
     },
   },
   modules: {},

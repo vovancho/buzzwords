@@ -19,7 +19,7 @@
     <v-divider />
     <v-list-item-group multiple @change="itemsSelected" v-model="selectedItems">
       <v-list-item
-        v-for="(word, index) in selectedWords"
+        v-for="(word, index) in selectedWordsForHard"
         :key="index"
         :color="word.isCorrect ? 'light-green' : 'red'"
         :disabled="lock"
@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     ...mapState("exercise", [
-      "selectedWords",
+      "selectedWordsForHard",
       "correctWord",
       "language",
       "searchWord",
@@ -75,12 +75,13 @@ export default {
   },
   methods: {
     ...mapMutations("dictionary", ["speak"]),
-    ...mapMutations("exercise", [
-      "updateSearchWord",
-      "startRecognition",
+    ...mapActions("exercise", [
+      "applyCorrectAnswer",
+      "applyIncorrectAnswer",
       "stopRecognition",
+      "beginRecognition",
+      "updateSearchWord",
     ]),
-    ...mapActions("exercise", ["applyCorrectAnswer", "applyIncorrectAnswer"]),
     async itemsSelected() {
       if (!this.selectedItems.includes(this.getCorrectWordIndex)) {
         this.selectedItems.push(this.getCorrectWordIndex);
@@ -109,7 +110,7 @@ export default {
       if (this.recognizer.isRecognizing) {
         this.stopRecognition();
       } else {
-        this.startRecognition();
+        this.beginRecognition();
       }
     },
   },

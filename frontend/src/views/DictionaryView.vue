@@ -1,7 +1,11 @@
 <template>
   <v-sheet>
     <v-container>
-      <div v-for="n in 60" :key="n">DictionaryView {{ n }}</div>
+      <v-card>
+        <dictionary-search-word />
+        <v-divider />
+        <dictionary-items />
+      </v-card>
     </v-container>
     <dictionary-bottom-navigation />
   </v-sheet>
@@ -10,10 +14,16 @@
 <script>
 import DictionaryBottomNavigation from "@/components/dictionary/DictionaryBottomNavigation";
 import { mapMutations, mapGetters } from "vuex";
+import DictionarySearchWord from "@/components/dictionary/SearchWord";
+import DictionaryItems from "@/components/dictionary/DictionaryItems";
 
 export default {
   name: "DictionaryView",
-  components: { DictionaryBottomNavigation },
+  components: {
+    DictionaryItems,
+    DictionarySearchWord,
+    DictionaryBottomNavigation,
+  },
   computed: {
     ...mapGetters("dictionary", ["wordsCount"]),
   },
