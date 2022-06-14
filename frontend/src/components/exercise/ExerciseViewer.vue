@@ -30,7 +30,7 @@ export default {
   name: "ExerciseViewer",
   components: { HardWordList, EasyWordList, ChosenWord },
   computed: {
-    ...mapState("exercise", ["correctWord", "selectedWords", "mode"]),
+    ...mapState("exercise", ["correctWord", "mode"]),
     isEasyMode() {
       return this.mode === modes.EASY_MODE;
     },

@@ -41,29 +41,25 @@
 
 <script>
 import { mapGetters, mapMutations, mapState, mapActions } from "vuex";
-import * as languages from "@/store/exercise/languages";
 
 export default {
   name: "HardWordList",
   data() {
     return {
       selectedItems: [],
-      lock: false,
+      timer: null,
     };
   },
   computed: {
     ...mapState("exercise", [
-      "selectedWordsForHard",
       "correctWord",
       "language",
       "searchWord",
       "recognizer",
+      "lock",
     ]),
     ...mapGetters("dictionary", ["translationToText"]),
-    ...mapGetters("exercise", ["getWordList"]),
-    isEnLang() {
-      return this.language === languages.EN_LANGUAGE;
-    },
+    ...mapGetters("exercise", ["getWordList", "isCorrectWord", "isEnLang"]),
     localSearchWord: {
       get() {
         return this.searchWord;
@@ -75,6 +71,7 @@ export default {
   },
   methods: {
     ...mapMutations("dictionary", ["speak"]),
+    ...mapMutations("exercise", ["setLock"]),
     ...mapActions("exercise", [
       "applyCorrectAnswer",
       "applyIncorrectAnswer",
@@ -90,9 +87,15 @@ export default {
       this.speak(this.correctWord.name);
     },
     itemClick() {
-      this.lock = true;
+      this.setLock(true);
+
+      this.timer = setTimeout(() => this.nextClick(), 3000);
     },
     nextClick() {
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+
       if (this.selectedItems.length === 1) {
         this.applyCorrectAnswer();
       } else {
@@ -101,7 +104,7 @@ export default {
 
       this.updateSearchWord("");
       this.selectedItems = [];
-      this.lock = false;
+      this.setLock(false);
     },
     visibleClass() {
       return [this.localSearchWord.length > 0 ? "d-flex" : "d-none"];
@@ -112,9 +115,6 @@ export default {
       } else {
         this.beginRecognition();
       }
-    },
-    isCorrectWord(word) {
-      return word.name === this.correctWord.name;
     },
   },
 };

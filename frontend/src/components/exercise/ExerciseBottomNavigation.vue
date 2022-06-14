@@ -1,18 +1,18 @@
 <template>
   <v-bottom-navigation grow app class="justify-space-between">
-    <v-btn @click="toggleLanguage">
+    <v-btn @click="toggleLanguage" :disabled="lock">
       <span>Язык</span>
 
       <div class="font-weight-black text-h6">{{ languageTitle }}</div>
     </v-btn>
 
-    <v-btn to="dictionary">
+    <v-btn to="dictionary" :disabled="lock">
       <span>Справка</span>
 
       <v-icon>mdi-help-circle-outline</v-icon>
     </v-btn>
 
-    <v-btn @click="toggleMode">
+    <v-btn @click="toggleMode" :disabled="lock">
       <span>Режим</span>
 
       <div
@@ -33,7 +33,7 @@ import * as modes from "@/store/exercise/modes";
 export default {
   name: "ExerciseBottomNavigation",
   computed: {
-    ...mapState("exercise", ["language", "mode"]),
+    ...mapState("exercise", ["language", "mode", "lock"]),
     languageTitle() {
       return this.language === languages.EN_LANGUAGE ? "EN" : "RU";
     },

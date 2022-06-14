@@ -1994,9 +1994,9 @@ export default [
     type: types.SIMPLE_TYPE,
   },
   {
-    name: "the Mediterranean",
+    name: "the mediterranean",
     transcription: "ðə ˌmɛdətəˈreɪniən",
-    translation: ["Средиземное море"],
+    translation: ["средиземное море"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
   },

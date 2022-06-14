@@ -23,7 +23,6 @@
 
 <script>
 import { mapGetters, mapMutations, mapState, mapActions } from "vuex";
-import * as languages from "@/store/exercise/languages";
 
 export default {
   name: "EasyWordList",
@@ -31,19 +30,21 @@ export default {
     return {
       timer: null,
       selectedItems: [],
-      lock: false,
     };
   },
   computed: {
-    ...mapState("exercise", ["selectedWords", "correctWord", "language"]),
+    ...mapState("exercise", [
+      "correctWord",
+      "easySelectedWords",
+      "language",
+      "lock",
+    ]),
     ...mapGetters("dictionary", ["translationToText"]),
-    ...mapGetters("exercise", ["getWordList"]),
-    isEnLang() {
-      return this.language === languages.EN_LANGUAGE;
-    },
+    ...mapGetters("exercise", ["getWordList", "isCorrectWord", "isEnLang"]),
   },
   methods: {
     ...mapMutations("dictionary", ["speak"]),
+    ...mapMutations("exercise", ["setLock"]),
     ...mapActions("exercise", ["applyCorrectAnswer", "applyIncorrectAnswer"]),
     async itemsSelected() {
       if (!this.selectedItems.includes(this.correctWord.name)) {
@@ -53,7 +54,7 @@ export default {
       this.speak(this.correctWord.name);
     },
     itemClick() {
-      this.lock = true;
+      this.setLock(true);
 
       this.timer = setTimeout(() => this.nextClick(), 3000);
     },
@@ -69,10 +70,7 @@ export default {
       }
 
       this.selectedItems = [];
-      this.lock = false;
-    },
-    isCorrectWord(word) {
-      return word.name === this.correctWord.name;
+      this.setLock(false);
     },
   },
 };

@@ -8,7 +8,8 @@ export default {
     mode: modes.EASY_MODE,
     correctWord: null,
     searchWord: "",
-    selectedWords: [],
+    easySelectedWords: [],
+    hardSelectedWords: [],
     wordBuffer1: [],
     wordBuffer2: [],
     wordBuffer3: [],
@@ -18,6 +19,7 @@ export default {
       recognition: null,
       isRecognizing: false,
     },
+    lock: false,
   },
   getters: {
     getCorrectWordTitle: (state, getters, rootState, rootGetters) => {
@@ -37,9 +39,21 @@ export default {
       );
     },
     getWordList: (state) => {
-      return [state.correctWord, ...state.selectedWords].sort(
-        () => Math.random() - 0.5
-      );
+      if (state.mode === modes.EASY_MODE) {
+        return [state.correctWord, ...state.easySelectedWords].sort(
+          () => Math.random() - 0.5
+        );
+      } else {
+        return [state.correctWord, ...state.hardSelectedWords].sort(
+          () => Math.random() - 0.5
+        );
+      }
+    },
+    isCorrectWord: (state) => (word) => {
+      return word.name === state.correctWord.name;
+    },
+    isEnLang: (state) => {
+      return state.language === languages.EN_LANGUAGE;
     },
   },
   mutations: {
@@ -65,6 +79,9 @@ export default {
     setMode(state, mode) {
       state.mode = mode;
     },
+    setLock(state, isLock) {
+      state.lock = isLock;
+    },
     toggleMode(state) {
       state.mode =
         state.mode === modes.EASY_MODE ? modes.HARD_MODE : modes.EASY_MODE;
@@ -75,7 +92,7 @@ export default {
       let founded;
       let words = [];
 
-      state.selectedWords = [];
+      state.hardSelectedWords = [];
       if (!state.searchWord) {
         return;
       }
@@ -83,7 +100,7 @@ export default {
       if (state.language === languages.EN_LANGUAGE) {
         founded = Object.fromEntries(
           Object.entries(state.wordRuBufferIndex).filter(([key]) =>
-            key.startsWith(state.searchWord)
+            key.startsWith(state.searchWord.toLowerCase())
           )
         );
 
@@ -95,7 +112,7 @@ export default {
       } else {
         founded = Object.fromEntries(
           Object.entries(state.wordBufferIndex).filter(([key]) =>
-            key.startsWith(state.searchWord)
+            key.startsWith(state.searchWord.toLowerCase())
           )
         );
 
@@ -106,32 +123,31 @@ export default {
       words.forEach(function (wordIndex) {
         switch (state.wordBufferIndex[wordIndex].bufferNum) {
           case 3:
-            state.selectedWords.push(
+            state.hardSelectedWords.push(
               state.wordBuffer3.find((word) => word.name === wordIndex)
             );
             break;
           case 2:
-            state.selectedWords.push(
+            state.hardSelectedWords.push(
               state.wordBuffer2.find((word) => word.name === wordIndex)
             );
             break;
           default:
             tmpWord = state.wordBuffer1.find((word) => word.name === wordIndex);
 
-            state.selectedWords.push(tmpWord);
+            state.hardSelectedWords.push(tmpWord);
         }
       });
 
-      state.selectedWords = state.selectedWords.filter((word) => Boolean(word));
+      state.hardSelectedWords = state.hardSelectedWords.filter((word) =>
+        Boolean(word)
+      );
     },
     setCorrectWord(state, correctWord) {
       state.correctWord = correctWord;
     },
-    addSelectedWord(state, selectedWord) {
-      state.selectedWords.push(selectedWord);
-    },
-    addSelectedWordForHard(state, selectedWordForHard) {
-      state.selectedWordsForHard.push(selectedWordForHard);
+    addEasySelectedWord(state, word) {
+      state.easySelectedWords.push(word);
     },
     setWordBuffer1(state, wordBuffer) {
       wordBuffer = wordBuffer.map(function (word) {
@@ -166,10 +182,8 @@ export default {
       state.wordRuBufferIndex = {};
     },
     resetSelectedWords(state) {
-      state.selectedWords = [];
-    },
-    shuffleSelectedWords(state) {
-      state.selectedWords.sort(() => Math.random() - 0.5);
+      state.easySelectedWords = [];
+      state.hardSelectedWords = [];
     },
     shuffleWordBuffer1(state) {
       state.wordBuffer1.sort(() => Math.random() - 0.5);
@@ -255,10 +269,8 @@ export default {
       if (!getters.isEmptyBuffers) {
         commit("setCorrectWord", await dispatch("pullWord"));
 
-        if (state.mode === modes.EASY_MODE) {
-          while (state.selectedWords.length < 5 && !getters.isEmptyBuffers) {
-            commit("addSelectedWord", await dispatch("getRandomWord"));
-          }
+        while (state.easySelectedWords.length < 5 && !getters.isEmptyBuffers) {
+          commit("addEasySelectedWord", await dispatch("getRandomWord"));
         }
       }
     },
