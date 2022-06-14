@@ -9,25 +9,17 @@ export default {
     correctWord: null,
     searchWord: "",
     selectedWords: [],
-    selectedWordsForHard: [],
     wordBuffer1: [],
     wordBuffer2: [],
     wordBuffer3: [],
-    wordBufferIndexOffset1: -1,
-    wordBufferIndexOffset2: -1,
-    wordBufferIndexOffset3: -1,
     wordBufferIndex: {},
     wordRuBufferIndex: {},
     recognizer: {
       recognition: null,
       isRecognizing: false,
-      transcript: "",
     },
   },
   getters: {
-    getCorrectWordIndex: (state) => {
-      return state.correctWord.name;
-    },
     getCorrectWordTitle: (state, getters, rootState, rootGetters) => {
       if (state.language === languages.EN_LANGUAGE) {
         return state.correctWord.name;
@@ -42,6 +34,11 @@ export default {
         state.wordBuffer1.length === 0 &&
         state.wordBuffer2.length === 0 &&
         state.wordBuffer3.length === 0
+      );
+    },
+    getWordList: (state) => {
+      return [state.correctWord, ...state.selectedWords].sort(
+        () => Math.random() - 0.5
       );
     },
   },
@@ -78,7 +75,7 @@ export default {
       let founded;
       let words = [];
 
-      state.selectedWordsForHard = [];
+      state.selectedWords = [];
       if (!state.searchWord) {
         return;
       }
@@ -109,47 +106,26 @@ export default {
       words.forEach(function (wordIndex) {
         switch (state.wordBufferIndex[wordIndex].bufferNum) {
           case 3:
-            state.selectedWordsForHard.push(
+            state.selectedWords.push(
               state.wordBuffer3.find((word) => word.name === wordIndex)
             );
             break;
           case 2:
-            state.selectedWordsForHard.push(
+            state.selectedWords.push(
               state.wordBuffer2.find((word) => word.name === wordIndex)
             );
             break;
           default:
-            tmpWord =
-              state.wordBuffer1.find((word) => word.name === wordIndex) ||
-              state.selectedWords.find((word) => word.name === wordIndex);
+            tmpWord = state.wordBuffer1.find((word) => word.name === wordIndex);
 
-            state.selectedWordsForHard.push(tmpWord);
+            state.selectedWords.push(tmpWord);
         }
       });
 
-      state.selectedWordsForHard = state.selectedWordsForHard.filter((word) =>
-        Boolean(word)
-      );
-      state.selectedWordsForHard.map(function (word) {
-        if (word.name === state.correctWord.name) {
-          word.isCorrect = true;
-        }
-
-        word.visible = true;
-
-        return word;
-      });
+      state.selectedWords = state.selectedWords.filter((word) => Boolean(word));
     },
     setCorrectWord(state, correctWord) {
       state.correctWord = correctWord;
-
-      if (correctWord) {
-        state.selectedWords.map(function (word) {
-          word.isCorrect = correctWord.name === word.name;
-
-          return word;
-        });
-      }
     },
     addSelectedWord(state, selectedWord) {
       state.selectedWords.push(selectedWord);
@@ -158,17 +134,25 @@ export default {
       state.selectedWordsForHard.push(selectedWordForHard);
     },
     setWordBuffer1(state, wordBuffer) {
+      wordBuffer = wordBuffer.map(function (word) {
+        word.bufferNum = 1;
+
+        return word;
+      });
       state.wordBuffer1 = wordBuffer;
     },
     addWordBuffer(state, { word, num }) {
       switch (num) {
         case 3:
+          word.bufferNum = 3;
           state.wordBuffer3.push(word);
           break;
         case 2:
+          word.bufferNum = 2;
           state.wordBuffer2.push(word);
           break;
         default:
+          word.bufferNum = 1;
           state.wordBuffer1.push(word);
           break;
       }
@@ -180,14 +164,11 @@ export default {
       state.wordBuffer3 = [];
       state.wordBufferIndex = {};
       state.wordRuBufferIndex = {};
-      state.wordBufferIndexOffset1 = -1;
-      state.wordBufferIndexOffset2 = -1;
-      state.wordBufferIndexOffset3 = -1;
     },
     resetSelectedWords(state) {
       state.selectedWords = [];
     },
-    shuffleSelectedWord(state) {
+    shuffleSelectedWords(state) {
       state.selectedWords.sort(() => Math.random() - 0.5);
     },
     shuffleWordBuffer1(state) {
@@ -211,15 +192,6 @@ export default {
     setRecognition(state, recognition) {
       state.recognizer.recognition = recognition;
     },
-    incWordBufferIndexOffset1(state) {
-      state.wordBufferIndexOffset1++;
-    },
-    incWordBufferIndexOffset2(state) {
-      state.wordBufferIndexOffset2++;
-    },
-    incWordBufferIndexOffset3(state) {
-      state.wordBufferIndexOffset3++;
-    },
     addWordBufferIndex(state, config) {
       state.wordBufferIndex[config.name] = {
         bufferNum: config.bufferNum,
@@ -237,9 +209,6 @@ export default {
   actions: {
     updateSearchWord({ commit }, searchText) {
       commit("setSearchWord", searchText);
-      commit("foundHardModeList");
-    },
-    triggerHardModeList({ commit }) {
       commit("foundHardModeList");
     },
     beginRecognition({ commit }) {
@@ -265,19 +234,17 @@ export default {
     },
     resetExercise({ commit, rootState, dispatch }) {
       return new Promise((resolve) => {
+        const language =
+          localStorage.getItem("exercise.language") || languages.EN_LANGUAGE;
+        const mode = localStorage.getItem("exercise.mode") || modes.EASY_MODE;
+
+        commit("setLanguage", language);
+        commit("setMode", mode);
         commit("resetExercise");
         commit("setWordBuffer1", [...rootState.dictionary.sourceWords]);
         commit("shuffleWordBuffer1");
         dispatch("buildBufferIndex");
         dispatch("buildWordRuBufferIndex");
-        commit(
-          "setLanguage",
-          localStorage.getItem("exercise.language") || languages.EN_LANGUAGE
-        );
-        commit(
-          "setMode",
-          localStorage.getItem("exercise.mode") || modes.EASY_MODE
-        );
 
         resolve();
       });
@@ -285,66 +252,40 @@ export default {
     async triggerNewExerciseItem({ state, dispatch, commit, getters }) {
       commit("resetSelectedWords");
 
-      while (state.selectedWords.length < 6 && !getters.isEmptyBuffers) {
-        let word = await dispatch("getWord");
-        word.visible = false;
-        commit("addSelectedWord", word);
-      }
+      if (!getters.isEmptyBuffers) {
+        commit("setCorrectWord", await dispatch("pullWord"));
 
-      if (state.selectedWords.length) {
-        let correctWord = state.selectedWords.splice(
-          Math.floor(Math.random() * state.selectedWords.length),
-          1
-        );
-        correctWord = correctWord.length ? correctWord.shift() : null;
-
-        commit("addSelectedWord", correctWord);
-        commit("setCorrectWord", correctWord);
-        commit("shuffleSelectedWord", correctWord);
-
-        let correctWordHard = correctWord;
-        correctWordHard.visible = false;
-        commit("addSelectedWordForHard", correctWordHard);
-      }
-    },
-    async applyCorrectAnswer({ state, commit, dispatch }) {
-      while (state.selectedWords.length > 0) {
-        let selected = state.selectedWords.splice(0, 1);
-
-        if (selected.length) {
-          selected = selected.shift();
-
-          if (selected.isCorrect) {
-            if (selected.bufferNum < 3) {
-              commit("addWordBuffer", {
-                word: selected,
-                num: selected.bufferNum + 1,
-              });
-            }
-          } else {
-            commit("addWordBuffer", {
-              word: selected,
-              num: selected.bufferNum,
-            });
+        if (state.mode === modes.EASY_MODE) {
+          while (state.selectedWords.length < 5 && !getters.isEmptyBuffers) {
+            commit("addSelectedWord", await dispatch("getRandomWord"));
           }
         }
       }
+    },
+    async applyCorrectAnswer({ state, commit, dispatch }) {
+      commit("addWordBuffer", {
+        word: state.correctWord,
+        num: state.correctWord.bufferNum + 1,
+      });
 
       dispatch("triggerNewExerciseItem");
     },
     async applyIncorrectAnswer({ state, commit, dispatch }) {
-      while (state.selectedWords.length > 0) {
-        let selected = state.selectedWords.splice(0, 1);
-
-        if (selected.length) {
-          selected = selected.shift();
-          commit("addWordBuffer", { word: selected, num: selected.bufferNum });
-        }
-      }
+      commit("addWordBuffer", {
+        word: state.correctWord,
+        num: state.correctWord.bufferNum,
+      });
 
       dispatch("triggerNewExerciseItem");
     },
-    async getWord({ dispatch }) {
+    async getRandomWord({ rootState }) {
+      const randomIndex = Math.floor(
+        Math.random() * rootState.dictionary.sourceWords.length
+      );
+
+      return rootState.dictionary.sourceWords[randomIndex];
+    },
+    async pullWord({ dispatch }) {
       let bufferNum = 1;
       const probability = Math.random() * 101;
 
@@ -357,62 +298,64 @@ export default {
           break;
       }
 
-      return await dispatch("getWordInternal", {
+      return await dispatch("pullWordInternal", {
         bufferNum,
       });
     },
-    async getWordInternal({ state, dispatch }, { bufferNum, isFirst = true }) {
+    async pullWordInternal({ dispatch }, { bufferNum, checkFirst = true }) {
+      return dispatch("pullWordFromBuffer", bufferNum).then(function (word) {
+        return new Promise((resolve) => {
+          if (word) {
+            resolve(word);
+          } else {
+            switch (bufferNum) {
+              case 3:
+                if (checkFirst) {
+                  dispatch("pullWordInternal", {
+                    bufferNum: 1,
+                    checkFirst: false,
+                  }).then((word) => resolve(word));
+                } else {
+                  resolve(null);
+                }
+
+                break;
+              case 2:
+                dispatch("pullWordInternal", {
+                  bufferNum: checkFirst ? 1 : 3,
+                  checkFirst: false,
+                }).then((word) => resolve(word));
+
+                break;
+              default:
+                dispatch("pullWordInternal", {
+                  bufferNum: 2,
+                  checkFirst: false,
+                }).then((word) => resolve(word));
+            }
+          }
+        });
+      });
+    },
+    async pullWordFromBuffer({ state }, bufferNum) {
       return new Promise((resolve) => {
-        let selected;
+        let word;
 
         switch (bufferNum) {
           case 3:
-            selected = state.wordBuffer3.splice(0, 1);
-
-            if (selected.length) {
-              selected = selected.shift();
-              selected.bufferNum = 3;
-
-              resolve(selected);
-            } else if (isFirst) {
-              dispatch("getWordInternal", {
-                bufferNum: 1,
-                isFirst: false,
-              }).then((selected) => resolve(selected));
-            } else {
-              resolve(null);
-            }
-
+            word = state.wordBuffer3.splice(0, 1);
             break;
           case 2:
-            selected = state.wordBuffer2.splice(0, 1);
-
-            if (selected.length) {
-              selected = selected.shift();
-              selected.bufferNum = 2;
-
-              resolve(selected);
-            } else {
-              dispatch("getWordInternal", {
-                bufferNum: isFirst ? 1 : 3,
-                isFirst: false,
-              }).then((selected) => resolve(selected));
-            }
+            word = state.wordBuffer2.splice(0, 1);
             break;
           default:
-            selected = state.wordBuffer1.splice(0, 1);
+            word = state.wordBuffer1.splice(0, 1);
+        }
 
-            if (selected.length) {
-              selected = selected.shift();
-              selected.bufferNum = 1;
-
-              resolve(selected);
-            } else {
-              dispatch("getWordInternal", {
-                bufferNum: 2,
-                isFirst: false,
-              }).then((selected) => resolve(selected));
-            }
+        if (word && word.length) {
+          resolve(word.shift());
+        } else {
+          resolve(null);
         }
       });
     },
@@ -442,27 +385,19 @@ export default {
         commit("addWordBufferIndex", {
           name: word.name,
           bufferNum: 1,
-          index: 1 + state.wordBufferIndexOffset1,
         });
-
-        commit("incWordBufferIndexOffset1");
       });
       state.wordBuffer2.forEach(function (word) {
         commit("addWordBufferIndex", {
           name: word.name,
           bufferNum: 2,
-          index: 1 + state.wordBufferIndexOffset2,
         });
-
-        commit("incWordBufferIndexOffset2");
       });
       state.wordBuffer3.forEach(function (word) {
         commit("addWordBufferIndex", {
           name: word.name,
           bufferNum: 3,
-          index: 1 + state.wordBufferIndexOffset3,
         });
-        commit("incWordBufferIndexOffset3");
       });
     },
     buildWordRuBufferIndex({ state, commit }) {

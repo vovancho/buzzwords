@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <div v-if="selectedWords.length > 0 && correctWord">
+    <div v-if="correctWord">
       <v-badge
         color="info"
         overlap

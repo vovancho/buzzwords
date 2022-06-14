@@ -19,13 +19,13 @@
     <v-divider />
     <v-list-item-group multiple @change="itemsSelected" v-model="selectedItems">
       <v-list-item
-        v-for="(word, index) in selectedWordsForHard"
+        v-for="(word, index) in getWordList"
         :key="index"
-        :color="word.isCorrect ? 'light-green' : 'red'"
+        :color="isCorrectWord(word) ? 'light-green' : 'red'"
         :disabled="lock"
         :value="word.name"
         @click="itemClick"
-        :class="visibleClass(word)"
+        :class="visibleClass()"
       >
         <v-list-item-content>
           <v-list-item-title
@@ -60,7 +60,7 @@ export default {
       "recognizer",
     ]),
     ...mapGetters("dictionary", ["translationToText"]),
-    ...mapGetters("exercise", ["getCorrectWordIndex"]),
+    ...mapGetters("exercise", ["getWordList"]),
     isEnLang() {
       return this.language === languages.EN_LANGUAGE;
     },
@@ -83,8 +83,8 @@ export default {
       "updateSearchWord",
     ]),
     async itemsSelected() {
-      if (!this.selectedItems.includes(this.getCorrectWordIndex)) {
-        this.selectedItems.push(this.getCorrectWordIndex);
+      if (!this.selectedItems.includes(this.correctWord.name)) {
+        this.selectedItems.push(this.correctWord.name);
       }
 
       this.speak(this.correctWord.name);
@@ -103,8 +103,8 @@ export default {
       this.selectedItems = [];
       this.lock = false;
     },
-    visibleClass(word) {
-      return [word && word.visible ? "d-flex" : "d-none"];
+    visibleClass() {
+      return [this.localSearchWord.length > 0 ? "d-flex" : "d-none"];
     },
     recognizeSpeech() {
       if (this.recognizer.isRecognizing) {
@@ -112,6 +112,9 @@ export default {
       } else {
         this.beginRecognition();
       }
+    },
+    isCorrectWord(word) {
+      return word.name === this.correctWord.name;
     },
   },
 };

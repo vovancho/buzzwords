@@ -2,9 +2,9 @@
   <v-list rounded>
     <v-list-item-group multiple @change="itemsSelected" v-model="selectedItems">
       <v-list-item
-        v-for="(word, index) in selectedWords"
+        v-for="(word, index) in getWordList"
         :key="index"
-        :color="word.isCorrect ? 'light-green' : 'red'"
+        :color="isCorrectWord(word) ? 'light-green' : 'red'"
         :disabled="lock"
         :value="word.name"
         @click="itemClick"
@@ -37,7 +37,7 @@ export default {
   computed: {
     ...mapState("exercise", ["selectedWords", "correctWord", "language"]),
     ...mapGetters("dictionary", ["translationToText"]),
-    ...mapGetters("exercise", ["getCorrectWordIndex"]),
+    ...mapGetters("exercise", ["getWordList"]),
     isEnLang() {
       return this.language === languages.EN_LANGUAGE;
     },
@@ -46,8 +46,8 @@ export default {
     ...mapMutations("dictionary", ["speak"]),
     ...mapActions("exercise", ["applyCorrectAnswer", "applyIncorrectAnswer"]),
     async itemsSelected() {
-      if (!this.selectedItems.includes(this.getCorrectWordIndex)) {
-        this.selectedItems.push(this.getCorrectWordIndex);
+      if (!this.selectedItems.includes(this.correctWord.name)) {
+        this.selectedItems.push(this.correctWord.name);
       }
 
       this.speak(this.correctWord.name);
@@ -70,6 +70,9 @@ export default {
 
       this.selectedItems = [];
       this.lock = false;
+    },
+    isCorrectWord(word) {
+      return word.name === this.correctWord.name;
     },
   },
 };
