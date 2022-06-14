@@ -44,7 +44,25 @@ export default {
           () => Math.random() - 0.5
         );
       } else {
-        return [state.correctWord, ...state.hardSelectedWords].sort(
+        let correctWords = [];
+
+        if (state.language === languages.EN_LANGUAGE) {
+          if (
+            state.correctWord.translation.find((translation) =>
+              translation.startsWith(state.searchWord.toLowerCase())
+            )
+          ) {
+            correctWords = [state.correctWord];
+          }
+        } else {
+          if (
+            state.correctWord.name.startsWith(state.searchWord.toLowerCase())
+          ) {
+            correctWords = [state.correctWord];
+          }
+        }
+
+        return [...correctWords, ...state.hardSelectedWords].sort(
           () => Math.random() - 0.5
         );
       }
