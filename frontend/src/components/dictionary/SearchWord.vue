@@ -4,17 +4,17 @@
     single-line
     clearable
     filled
-    @input="triggerSearchWord"
     v-model="localSearchWord"
   ></v-text-field>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "DictionarySearchWord",
   computed: {
+    ...mapState("dictionary", ["searchWord"]),
     localSearchWord: {
       get() {
         return this.searchWord;
@@ -25,7 +25,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("dictionary", ["updateSearchWord", "triggerSearchWord"]),
+    ...mapActions("dictionary", ["updateSearchWord"]),
   },
 };
 </script>

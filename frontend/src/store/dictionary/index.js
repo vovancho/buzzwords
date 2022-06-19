@@ -1,5 +1,5 @@
-import * as sort from "./sort";
-import words from "./db";
+import * as sort from "@/store/dictionary/sort";
+import words from "@/store/dictionary/db";
 
 export default {
   namespaced: true,
@@ -9,13 +9,90 @@ export default {
     dictionarySort: sort.ALPHABET_SORT,
     utterance: null,
     searchWord: "",
+    pagination: {
+      page: 1,
+      pageSize: 15,
+    },
   },
   getters: {
     wordsCount: (state) => {
       return state.sourceWords.length;
     },
+    searchWords: (state) => {
+      const words = state.sourceWords.filter((word) =>
+        word.name.startsWith(state.searchWord)
+      );
+
+      return words.sort(function (word1, word2) {
+        switch (state.dictionarySort) {
+          case sort.ALPHABET_SORT:
+            if (word1.name > word2.name) {
+              return 1;
+            }
+            if (word1.name < word2.name) {
+              return -1;
+            }
+
+            break;
+
+          case sort.DATE_ADDED_SORT:
+            if (word1.createdAt > word2.createdAt) {
+              return 1;
+            }
+            if (word1.createdAt < word2.createdAt) {
+              return -1;
+            }
+            break;
+        }
+        return 0;
+      });
+    },
+    viewWords: (state, getters) => {
+      const startSliceIndex =
+        state.pagination.pageSize * (state.pagination.page - 1);
+
+      const sliced = getters.searchWords.slice(
+        startSliceIndex,
+        startSliceIndex + state.pagination.pageSize
+      );
+
+      return sliced.map(function (word, index) {
+        if (state.dictionarySort === sort.DATE_ADDED_SORT) {
+          if (index > 0) {
+            const previousWord = sliced[index - 1];
+
+            word.isShowCreatedAt =
+              getters.formattedCreateAt(previousWord) !==
+              getters.formattedCreateAt(word);
+          } else {
+            word.isShowCreatedAt = true;
+          }
+        } else {
+          word.isShowCreatedAt = false;
+        }
+
+        return word;
+      });
+    },
     translationToText: () => (translation) => {
       return translation.join(", ");
+    },
+    pageCount: (state, getters) => {
+      if (state.pageSize !== 0) {
+        return Math.ceil(
+          getters.searchWords.length / state.pagination.pageSize
+        );
+      } else {
+        return 1;
+      }
+    },
+    formattedCreateAt: () => (word) => {
+      return word.createdAt.slice(0, 10);
+    },
+    wordPhrases: (state) => (word) => {
+      return state.sourceWords.filter((sourceWord) =>
+        word.phrases.includes(sourceWord.name)
+      );
     },
   },
   mutations: {
@@ -24,6 +101,8 @@ export default {
         state.dictionarySort === sort.ALPHABET_SORT
           ? sort.DATE_ADDED_SORT
           : sort.ALPHABET_SORT;
+
+      localStorage.setItem("dictionary.sort", state.dictionarySort);
     },
     setUtterance(state, utterance) {
       state.utterance = utterance;
@@ -33,10 +112,16 @@ export default {
       speechSynthesis.speak(state.utterance);
     },
     setSearchWord(state, searchWord) {
-      state.searchWord = searchWord;
+      state.searchWord = searchWord || "";
     },
     setSearchedWords(state, searchedWords) {
       state.searchedWords = searchedWords;
+    },
+    setPaginationPage(state, page) {
+      state.pagination.page = page;
+    },
+    setDictionarySort(state, dictionarySort) {
+      state.dictionarySort = dictionarySort;
     },
   },
   actions: {
@@ -63,16 +148,15 @@ export default {
       commit("setUtterance", utterance);
     },
     async initDictionary({ commit, state }) {
-      commit("setSearchedWords", [...state.sourceWords]);
+      const dictionarySort =
+        localStorage.getItem("dictionary.sort") || sort.ALPHABET_SORT;
+
+      commit("setDictionarySort", dictionarySort);
       commit("setSearchWord", "");
+      commit("setSearchedWords", [...state.sourceWords]);
     },
-    async triggerSearchWord({ commit, state }) {
-      commit(
-        "setSearchedWords",
-        state.sourceWords.filter((word) =>
-          word.name.startsWith(state.searchWord)
-        )
-      );
+    async updatePaginationPage({ commit }, page) {
+      commit("setPaginationPage", page);
     },
   },
   modules: {},

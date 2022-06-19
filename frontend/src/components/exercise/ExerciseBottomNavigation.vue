@@ -6,7 +6,7 @@
       <div class="font-weight-black text-h6">{{ languageTitle }}</div>
     </v-btn>
 
-    <v-btn to="dictionary" :disabled="lock">
+    <v-btn @click="helpClicks" :disabled="lock">
       <span>Справка</span>
 
       <v-icon>mdi-help-circle-outline</v-icon>
@@ -33,7 +33,7 @@ import * as modes from "@/store/exercise/modes";
 export default {
   name: "ExerciseBottomNavigation",
   computed: {
-    ...mapState("exercise", ["language", "mode", "lock"]),
+    ...mapState("exercise", ["language", "mode", "lock", "correctWord"]),
     languageTitle() {
       return this.language === languages.EN_LANGUAGE ? "EN" : "RU";
     },
@@ -46,6 +46,11 @@ export default {
   },
   methods: {
     ...mapMutations("exercise", ["toggleLanguage", "toggleMode"]),
+    ...mapMutations("dictionary", ["setSearchWord"]),
+    helpClicks() {
+      this.setSearchWord(this.correctWord.name);
+      this.$router.push({ name: "dictionary" }).catch(() => {});
+    },
   },
 };
 </script>
