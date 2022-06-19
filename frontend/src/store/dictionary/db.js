@@ -17,6 +17,7 @@ export default [
         translation: "Мальчик побежал через улицу",
       },
     ],
+    groups: ["Игра престолов S01E01", "Игра престолов S01E02"],
   },
   {
     name: "against",
@@ -24,6 +25,7 @@ export default [
     translation: ["против", "с"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E01"],
   },
   {
     name: "ahead",
@@ -31,6 +33,7 @@ export default [
     translation: ["вперед"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E01"],
   },
   {
     name: "almost",
@@ -38,6 +41,7 @@ export default [
     translation: ["почти"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E01"],
   },
   {
     name: "along",
@@ -45,6 +49,7 @@ export default [
     translation: ["по", "вдоль"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E01"],
   },
   {
     name: "approach",
@@ -52,6 +57,7 @@ export default [
     translation: ["подход"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E01"],
   },
   {
     name: "attractive",
@@ -59,6 +65,7 @@ export default [
     translation: ["привлекательный"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E01"],
   },
   {
     name: "aunt",
@@ -66,6 +73,7 @@ export default [
     translation: ["тетя"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "back away",
@@ -73,6 +81,7 @@ export default [
     translation: ["отойти", "отступить"],
     createdAt: "2022-06-07 07:26:55",
     type: types.PHRASAL_VERB_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "back off",
@@ -80,6 +89,7 @@ export default [
     translation: ["отступить"],
     createdAt: "2022-06-07 07:26:55",
     type: types.PHRASAL_VERB_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "be off",
@@ -87,6 +97,7 @@ export default [
     translation: ["уйти", "быть свободным"],
     createdAt: "2022-06-07 07:26:55",
     type: types.PHRASAL_VERB_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "be over",
@@ -94,6 +105,7 @@ export default [
     translation: ["проходить", "заканчиваться"],
     createdAt: "2022-06-07 07:26:55",
     type: types.PHRASAL_VERB_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "be up to",
@@ -101,6 +113,7 @@ export default [
     translation: ["быть способным зависеть от", "задумать"],
     createdAt: "2022-06-07 07:26:55",
     type: types.PHRASAL_VERB_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "behind",
@@ -108,6 +121,7 @@ export default [
     translation: ["сзади", "за"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "belief",
@@ -115,6 +129,7 @@ export default [
     translation: ["вера"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "beside",
@@ -122,6 +137,7 @@ export default [
     translation: ["рядом", "вне"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "bit",
@@ -129,6 +145,7 @@ export default [
     translation: ["немного"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "blow up",
@@ -136,6 +153,7 @@ export default [
     translation: ["вспылить", "взорвать"],
     createdAt: "2022-06-07 07:26:55",
     type: types.PHRASAL_VERB_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "book",
@@ -143,6 +161,7 @@ export default [
     translation: ["книга", "бронировать"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "both",
@@ -150,6 +169,7 @@ export default [
     translation: ["оба"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
+    groups: ["Игра престолов S01E02"],
   },
   {
     name: "break down",

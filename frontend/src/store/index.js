@@ -40,6 +40,7 @@ export default new Vuex.Store({
       await dispatch("exercise/initRecognizer");
       await dispatch("exercise/resetExercise");
       await dispatch("exercise/triggerNewExerciseItem");
+      await dispatch("settings/initGroupList");
     },
   },
   modules: {
