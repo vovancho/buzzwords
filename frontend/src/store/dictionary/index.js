@@ -139,7 +139,7 @@ export default {
   },
   actions: {
     updateSearchWord({ commit }, searchWord) {
-      commit("setSearchWord", searchWord);
+      commit("setSearchWord", searchWord.toLowerCase());
     },
     getVoices() {
       return new Promise((resolve) => {
