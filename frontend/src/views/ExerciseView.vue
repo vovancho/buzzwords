@@ -1,6 +1,6 @@
 <template>
-  <v-sheet>
-    <v-container>
+  <v-sheet class="fill-height">
+    <v-container style="height: 100%">
       <exercise-viewer />
     </v-container>
     <exercise-bottom-navigation />

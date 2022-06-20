@@ -15,11 +15,24 @@ export default {
     },
   },
   getters: {
-    wordsCount: (state) => {
-      return state.sourceWords.length;
+    wordsCount: (state, getters) => {
+      return getters.groupWords.length;
     },
-    searchWords: (state) => {
-      const words = state.sourceWords.filter((word) =>
+    groupWords: (state, getters, rootState) => {
+      const selectedGroups = rootState.settings.selectedGroups;
+
+      if (selectedGroups.length === 0) {
+        return state.sourceWords;
+      }
+
+      return state.sourceWords.filter(
+        (word) =>
+          word.groups &&
+          word.groups.filter((group) => selectedGroups.includes(group)).length
+      );
+    },
+    searchWords: (state, getters) => {
+      const words = getters.groupWords.filter((word) =>
         word.name.startsWith(state.searchWord)
       );
 
@@ -147,13 +160,13 @@ export default {
       utterance.voice = voices.find((voice) => voice.lang === "en-US");
       commit("setUtterance", utterance);
     },
-    async initDictionary({ commit, state }) {
+    async initDictionary({ commit, getters }) {
       const dictionarySort =
         localStorage.getItem("dictionary.sort") || sort.ALPHABET_SORT;
 
       commit("setDictionarySort", dictionarySort);
       commit("setSearchWord", "");
-      commit("setSearchedWords", [...state.sourceWords]);
+      commit("setSearchedWords", [...getters.groupWords]);
     },
     async updatePaginationPage({ commit }, page) {
       commit("setPaginationPage", page);

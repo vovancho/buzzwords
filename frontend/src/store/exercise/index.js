@@ -15,6 +15,7 @@ export default {
     wordBuffer3: [],
     wordBufferIndex: {},
     wordRuBufferIndex: {},
+    randomWordBuffer: [],
     recognizer: {
       recognition: null,
       isRecognizing: false,
@@ -237,6 +238,9 @@ export default {
         state.wordRuBufferIndex[config.translation] = [config.name];
       }
     },
+    setRandomWordBuffer(state, randomWords) {
+      state.randomWordBuffer = randomWords;
+    },
   },
   actions: {
     updateSearchWord({ commit }, searchText) {
@@ -264,7 +268,7 @@ export default {
       commit("abortRecognition");
       commit("setIsRecognizing", false);
     },
-    resetExercise({ commit, rootState, dispatch }) {
+    resetExercise({ commit, rootGetters, dispatch }) {
       return new Promise((resolve) => {
         const language =
           localStorage.getItem("exercise.language") || languages.EN_LANGUAGE;
@@ -273,7 +277,7 @@ export default {
         commit("setLanguage", language);
         commit("setMode", mode);
         commit("resetExercise");
-        commit("setWordBuffer1", [...rootState.dictionary.sourceWords]);
+        commit("setWordBuffer1", [...rootGetters["dictionary/groupWords"]]);
         commit("shuffleWordBuffer1");
         dispatch("buildBufferIndex");
         dispatch("buildWordRuBufferIndex");
@@ -287,7 +291,13 @@ export default {
       if (!getters.isEmptyBuffers) {
         commit("setCorrectWord", await dispatch("pullWord"));
 
-        while (state.easySelectedWords.length < 5 && !getters.isEmptyBuffers) {
+        await dispatch("initRandomWordBuffer");
+
+        while (
+          state.easySelectedWords.length < 5 &&
+          !getters.isEmptyBuffers &&
+          state.randomWordBuffer.length
+        ) {
           commit("addEasySelectedWord", await dispatch("getRandomWord"));
         }
       }
@@ -308,12 +318,17 @@ export default {
 
       dispatch("triggerNewExerciseItem");
     },
-    async getRandomWord({ rootState }) {
-      const randomIndex = Math.floor(
-        Math.random() * rootState.dictionary.sourceWords.length
-      );
+    async getRandomWord({ state, commit }) {
+      let randomWordBuffer = [...state.randomWordBuffer];
+      const randomWord = randomWordBuffer.splice(0, 1);
 
-      return rootState.dictionary.sourceWords[randomIndex];
+      if (randomWord) {
+        commit("setRandomWordBuffer", randomWordBuffer);
+
+        return randomWord.shift();
+      } else {
+        return null;
+      }
     },
     async pullWord({ dispatch }) {
       let bufferNum = 1;
@@ -410,7 +425,7 @@ export default {
 
       commit("setRecognition", recognition);
     },
-    buildBufferIndex({ state, commit }) {
+    async buildBufferIndex({ state, commit }) {
       state.wordBuffer1.forEach(function (word) {
         commit("addWordBufferIndex", {
           name: word.name,
@@ -430,7 +445,7 @@ export default {
         });
       });
     },
-    buildWordRuBufferIndex({ state, commit }) {
+    async buildWordRuBufferIndex({ state, commit }) {
       state.wordBuffer1.forEach(function (word) {
         word.translation.forEach(function (translationText) {
           commit("addWordRuBufferIndex", {
@@ -439,6 +454,12 @@ export default {
           });
         });
       });
+    },
+    async initRandomWordBuffer({ rootGetters, commit, state }) {
+      const randomWordBuffer = [...rootGetters["dictionary/groupWords"]]
+        .filter((word) => word.name !== state.correctWord.name)
+        .sort(() => Math.random() - 0.5);
+      commit("setRandomWordBuffer", randomWordBuffer);
     },
   },
   modules: {},

@@ -1,10 +1,10 @@
 <template>
-  <div :data-d="word.name">
+  <div>
     <v-subheader v-if="word.isShowCreatedAt">
       {{ formattedCreateAt(word) }}
     </v-subheader>
 
-    <v-list-group no-action>
+    <v-list-group no-action :class="wordType">
       <template v-slot:appendIcon>
         <div
           v-if="!word.v2 && !word.v3 && !word.phrases && !word.sentences"
@@ -180,6 +180,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import * as types from "@/store/dictionary/wordTypes";
 
 export default {
   name: "DictionaryItem",
@@ -192,6 +193,18 @@ export default {
       "formattedCreateAt",
       "wordPhrases",
     ]),
+    wordType() {
+      switch (this.word.type) {
+        case types.PHRASAL_VERB_TYPE:
+          return "word-type phrasal-verb-type";
+        case types.IRREGULAR_VERB_TYPE:
+          return "word-type irregular-verb-type";
+        case types.PHRASE_TYPE:
+          return "word-type phrase-type";
+        default:
+          return "";
+      }
+    },
   },
   methods: {
     ...mapMutations("dictionary", ["speak"]),
@@ -199,4 +212,26 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.word-type {
+  position: relative;
+
+  &:after {
+    display: block;
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    content: "";
+    right: 0;
+  }
+}
+.phrasal-verb-type:after {
+  border-right: 2px solid #821a1a;
+}
+.irregular-verb-type:after {
+  border-right: 2px solid #1a2f82;
+}
+.phrase-type:after {
+  border-right: 2px solid #1b4d0c;
+}
+</style>

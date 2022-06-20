@@ -3,6 +3,13 @@ export default {
   state: {
     groupList: [],
     selectedGroups: [],
+    fromWordList: [],
+    toWordList: [],
+    dictionaryConstraints: {
+      selectedGroups: [],
+      fromWord: "",
+      toWord: "",
+    },
   },
   getters: {},
   mutations: {
@@ -11,6 +18,7 @@ export default {
     },
     setSelectedGroups(state, selectedGroups) {
       state.selectedGroups = selectedGroups;
+      state.dictionaryConstraints.selectedGroups = selectedGroups;
     },
   },
   actions: {

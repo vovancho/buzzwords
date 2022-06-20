@@ -17,6 +17,18 @@
         persistent-hint
         clearable
       ></v-select>
+
+      <v-divider class="mt-5" />
+
+      <v-subheader>Ограничить набор слов</v-subheader>
+      <v-autocomplete
+        hide-no-data
+        hide-selected
+        label="от слова"
+        hint="Слова отсортированы по дате добавления"
+        persistent-hint
+      />
+      <v-autocomplete label="до слова" hint="Выбрано 12 слов" persistent-hint />
     </v-container>
     <settings-bottom-navigation />
   </v-sheet>

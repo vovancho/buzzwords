@@ -1,6 +1,6 @@
 <template>
-  <v-card>
-    <div v-if="correctWord">
+  <v-card class="fill-height">
+    <div class="fill-height" v-if="correctWord">
       <v-badge
         color="info"
         overlap
