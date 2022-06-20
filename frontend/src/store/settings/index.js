@@ -26,8 +26,7 @@ export default {
       const groupList = rootState.dictionary.sourceWords
         .map((word) => word.groups || null)
         .filter((word) => Boolean(word));
-      const selectedGroups =
-        localStorage.getItem("settings.selectedGroups") || [];
+      const selectedGroups = localStorage.getItem("settings.selectedGroups");
 
       commit(
         "setGroupList",
@@ -35,7 +34,7 @@ export default {
           .concat(...groupList)
           .filter((groupName, i, arr) => arr.indexOf(groupName) === i)
       );
-      commit("setSelectedGroups", JSON.parse(selectedGroups));
+      commit("setSelectedGroups", JSON.parse(selectedGroups) || []);
     },
     async updateSelectedGroups({ commit }, selectedGroups) {
       commit("setSelectedGroups", selectedGroups);
