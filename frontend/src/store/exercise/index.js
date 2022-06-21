@@ -244,6 +244,7 @@ export default {
   },
   actions: {
     updateSearchWord({ commit }, searchText) {
+      searchText = searchText || "";
       commit("setSearchWord", searchText);
       commit("foundHardModeList");
     },

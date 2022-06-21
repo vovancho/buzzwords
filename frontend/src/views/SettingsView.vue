@@ -47,10 +47,10 @@ export default {
     };
   },
   computed: {
-    ...mapState("settings", ["groupList", "selectedGroups"]),
+    ...mapState("settings", ["groupList", "dictionaryConstraints"]),
     groupItem: {
       get() {
-        return this.selectedGroups;
+        return this.dictionaryConstraints.selectedGroups;
       },
       set(value) {
         this.updateSelectedGroups(value);

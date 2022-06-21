@@ -2,7 +2,6 @@ export default {
   namespaced: true,
   state: {
     groupList: [],
-    selectedGroups: [],
     fromWordList: [],
     toWordList: [],
     dictionaryConstraints: {
@@ -17,7 +16,6 @@ export default {
       state.groupList = groupList;
     },
     setSelectedGroups(state, selectedGroups) {
-      state.selectedGroups = selectedGroups;
       state.dictionaryConstraints.selectedGroups = selectedGroups;
     },
   },
@@ -26,7 +24,9 @@ export default {
       const groupList = rootState.dictionary.sourceWords
         .map((word) => word.groups || null)
         .filter((word) => Boolean(word));
-      const selectedGroups = localStorage.getItem("settings.selectedGroups");
+      const selectedGroups = localStorage.getItem(
+        "settings.dictionaryConstraints.selectedGroups"
+      );
 
       commit(
         "setGroupList",
@@ -40,7 +40,7 @@ export default {
       commit("setSelectedGroups", selectedGroups);
 
       localStorage.setItem(
-        "settings.selectedGroups",
+        "settings.dictionaryConstraints.selectedGroups",
         JSON.stringify(selectedGroups)
       );
     },

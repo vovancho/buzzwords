@@ -19,7 +19,8 @@ export default {
       return getters.groupWords.length;
     },
     groupWords: (state, getters, rootState) => {
-      const selectedGroups = rootState.settings.selectedGroups;
+      const selectedGroups =
+        rootState.settings.dictionaryConstraints.selectedGroups;
 
       if (selectedGroups.length === 0) {
         return state.sourceWords;
@@ -139,6 +140,7 @@ export default {
   },
   actions: {
     updateSearchWord({ commit }, searchWord) {
+      searchWord = searchWord || "";
       commit("setSearchWord", searchWord.toLowerCase());
     },
     getVoices() {
