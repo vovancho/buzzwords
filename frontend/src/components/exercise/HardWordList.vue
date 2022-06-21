@@ -1,5 +1,5 @@
 <template>
-  <v-list rounded>
+  <v-list rounded class="fill-height">
     <v-list-item>
       <v-list-item-content>
         <v-text-field
@@ -17,25 +17,33 @@
       </v-list-item-content>
     </v-list-item>
     <v-divider />
-    <v-list-item-group multiple @change="itemsSelected" v-model="selectedItems">
-      <v-list-item
-        v-for="(word, index) in getWordList"
-        :key="index"
-        :color="isCorrectWord(word) ? 'light-green' : 'red'"
-        :disabled="lock"
-        :value="word.name"
-        @click="itemClick"
-        :class="visibleClass()"
+    <div class="fill-height hard-word-list-items">
+      <v-list-item-group
+        multiple
+        @change="itemsSelected"
+        v-model="selectedItems"
       >
-        <v-list-item-content>
-          <v-list-item-title
-            class="text-center"
-            v-text="isEnLang ? translationToText(word.translation) : word.name"
-          ></v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+        <v-list-item
+          v-for="(word, index) in getWordList"
+          :key="index"
+          :color="isCorrectWord(word) ? 'light-green' : 'red'"
+          :disabled="lock"
+          :value="word.name"
+          @click="itemClick"
+          :class="visibleClass()"
+        >
+          <v-list-item-content>
+            <v-list-item-title
+              class="text-center"
+              v-text="
+                isEnLang ? translationToText(word.translation) : word.name
+              "
+            ></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
       <div v-if="lock" @click="nextClick" class="lock-overlay"></div>
-    </v-list-item-group>
+    </div>
   </v-list>
 </template>
 
@@ -121,6 +129,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.hard-word-list-items {
+  position: relative;
+}
+
 .lock-overlay {
   width: 100%;
   height: 100%;

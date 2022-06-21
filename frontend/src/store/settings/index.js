@@ -161,7 +161,7 @@ export default {
 
         const items = getters.groupWords
           .slice(0, toWordIndex + 1)
-          .filter((word) => word.name.startsWith(search))
+          .filter((word) => word.name.startsWith(search.toLowerCase()))
           .map((word) => word.name);
 
         commit("setFromWordList", items);
@@ -179,7 +179,7 @@ export default {
 
         const items = getters.groupWords
           .slice(fromWordIndex, getters.groupWords.length)
-          .filter((word) => word.name.startsWith(search))
+          .filter((word) => word.name.startsWith(search.toLowerCase()))
           .map((word) => word.name);
 
         commit("setToWordList", items);

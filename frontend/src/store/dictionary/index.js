@@ -48,7 +48,7 @@ export default {
     },
     searchWords: (state, getters) => {
       const words = getters.groupWords.filter((word) =>
-        word.name.startsWith(state.searchWord)
+        word.name.startsWith(state.searchWord.toLowerCase())
       );
 
       return words.sort(function (word1, word2) {
@@ -155,7 +155,7 @@ export default {
   actions: {
     updateSearchWord({ commit }, searchWord) {
       searchWord = searchWord || "";
-      commit("setSearchWord", searchWord.toLowerCase());
+      commit("setSearchWord", searchWord);
     },
     getVoices() {
       return new Promise((resolve) => {
