@@ -4,7 +4,7 @@
       <v-badge
         color="info"
         overlap
-        :content="correctWord.bufferNum"
+        :content="getCorrectWordBufferNum"
         left
         class="chosen-word"
       >
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import ChosenWord from "@/components/exercise/ChosenWord";
 import EasyWordList from "@/components/exercise/EasyWordList";
 import * as modes from "@/store/exercise/modes";
@@ -31,9 +31,16 @@ export default {
   components: { HardWordList, EasyWordList, ChosenWord },
   computed: {
     ...mapState("exercise", ["correctWord", "mode"]),
+    ...mapGetters("exercise", ["getCorrectWordBufferNum"]),
     isEasyMode() {
       return this.mode === modes.EASY_MODE;
     },
+  },
+  methods: {
+    ...mapActions("exercise", ["resetExerciseIfSettingsChange"]),
+  },
+  async mounted() {
+    await this.resetExerciseIfSettingsChange();
   },
 };
 </script>

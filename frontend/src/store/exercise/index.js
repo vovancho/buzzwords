@@ -21,8 +21,12 @@ export default {
       isRecognizing: false,
     },
     lock: false,
+    localSettingsCache: "",
   },
   getters: {
+    getCorrectWordBufferNum: (state) => {
+      return state.correctWord.bufferNum;
+    },
     getCorrectWordTitle: (state, getters, rootState, rootGetters) => {
       if (state.language === languages.EN_LANGUAGE) {
         return state.correctWord.name;
@@ -45,27 +49,7 @@ export default {
           () => Math.random() - 0.5
         );
       } else {
-        let correctWords = [];
-
-        if (state.language === languages.EN_LANGUAGE) {
-          if (
-            state.correctWord.translation.find((translation) =>
-              translation.startsWith(state.searchWord.toLowerCase())
-            )
-          ) {
-            correctWords = [state.correctWord];
-          }
-        } else {
-          if (
-            state.correctWord.name.startsWith(state.searchWord.toLowerCase())
-          ) {
-            correctWords = [state.correctWord];
-          }
-        }
-
-        return [...correctWords, ...state.hardSelectedWords].sort(
-          () => Math.random() - 0.5
-        );
+        return [...state.hardSelectedWords].sort(() => Math.random() - 0.5);
       }
     },
     isCorrectWord: (state) => (word) => {
@@ -107,63 +91,11 @@ export default {
 
       localStorage.setItem("exercise.mode", state.mode);
     },
-    foundHardModeList(state) {
-      let founded;
-      let words = [];
-
-      state.hardSelectedWords = [];
-      if (!state.searchWord) {
-        return;
-      }
-
-      if (state.language === languages.EN_LANGUAGE) {
-        founded = Object.fromEntries(
-          Object.entries(state.wordRuBufferIndex).filter(([key]) =>
-            key.startsWith(state.searchWord.toLowerCase())
-          )
-        );
-
-        Object.keys(founded).map(function (translation) {
-          founded[translation].forEach(function (word) {
-            words.push(word);
-          });
-        });
-      } else {
-        founded = Object.fromEntries(
-          Object.entries(state.wordBufferIndex).filter(([key]) =>
-            key.startsWith(state.searchWord.toLowerCase())
-          )
-        );
-
-        words = Object.keys(founded);
-      }
-
-      let tmpWord;
-      words.forEach(function (wordIndex) {
-        switch (state.wordBufferIndex[wordIndex].bufferNum) {
-          case 3:
-            state.hardSelectedWords.push(
-              state.wordBuffer3.find((word) => word.name === wordIndex)
-            );
-            break;
-          case 2:
-            state.hardSelectedWords.push(
-              state.wordBuffer2.find((word) => word.name === wordIndex)
-            );
-            break;
-          default:
-            tmpWord = state.wordBuffer1.find((word) => word.name === wordIndex);
-
-            state.hardSelectedWords.push(tmpWord);
-        }
-      });
-
-      state.hardSelectedWords = state.hardSelectedWords.filter((word) =>
-        Boolean(word)
-      );
+    setHardSelectedWords(state, hardSelectedWords) {
+      state.hardSelectedWords = hardSelectedWords;
     },
     setCorrectWord(state, correctWord) {
-      state.correctWord = correctWord;
+      state.correctWord = Object.assign({}, correctWord);
     },
     addEasySelectedWord(state, word) {
       state.easySelectedWords.push(word);
@@ -228,7 +160,6 @@ export default {
     addWordBufferIndex(state, config) {
       state.wordBufferIndex[config.name] = {
         bufferNum: config.bufferNum,
-        index: config.index,
       };
     },
     addWordRuBufferIndex(state, config) {
@@ -241,21 +172,27 @@ export default {
     setRandomWordBuffer(state, randomWords) {
       state.randomWordBuffer = randomWords;
     },
+    setLocalSettingsCache(state, localSettingsCache) {
+      state.localSettingsCache = localSettingsCache;
+    },
   },
   actions: {
-    updateSearchWord({ commit }, searchText) {
+    async updateSearchWord({ commit, dispatch }, searchText) {
       searchText = searchText || "";
       commit("setSearchWord", searchText);
-      commit("foundHardModeList");
+
+      await dispatch("foundHardModeList");
     },
-    beginRecognition({ commit }) {
+    async beginRecognition({ commit, dispatch }) {
       commit("setSearchWord", "");
-      commit("setRecognitionOnResult", (event) => {
+      commit("setRecognitionOnResult", async (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           var result = event.results[i];
           if (result.isFinal) {
             commit("setSearchWord", result[0].transcript);
-            commit("foundHardModeList");
+
+            await dispatch("foundHardModeList");
+
             commit("abortRecognition");
             commit("setIsRecognizing", false);
           }
@@ -426,28 +363,16 @@ export default {
 
       commit("setRecognition", recognition);
     },
-    async buildBufferIndex({ state, commit }) {
-      state.wordBuffer1.forEach(function (word) {
+    async buildBufferIndex({ rootState, commit }) {
+      [...rootState.dictionary.sourceWords].forEach(function (word) {
         commit("addWordBufferIndex", {
           name: word.name,
           bufferNum: 1,
         });
       });
-      state.wordBuffer2.forEach(function (word) {
-        commit("addWordBufferIndex", {
-          name: word.name,
-          bufferNum: 2,
-        });
-      });
-      state.wordBuffer3.forEach(function (word) {
-        commit("addWordBufferIndex", {
-          name: word.name,
-          bufferNum: 3,
-        });
-      });
     },
-    async buildWordRuBufferIndex({ state, commit }) {
-      state.wordBuffer1.forEach(function (word) {
+    async buildWordRuBufferIndex({ rootState, commit }) {
+      [...rootState.dictionary.sourceWords].forEach(function (word) {
         word.translation.forEach(function (translationText) {
           commit("addWordRuBufferIndex", {
             name: word.name,
@@ -461,6 +386,67 @@ export default {
         .filter((word) => word.name !== state.correctWord.name)
         .sort(() => Math.random() - 0.5);
       commit("setRandomWordBuffer", randomWordBuffer);
+    },
+    async foundHardModeList({ rootState, state, commit }) {
+      let founded;
+      let words = [];
+
+      let hardSelectedWords = [];
+      if (!state.searchWord) {
+        return;
+      }
+
+      if (state.language === languages.EN_LANGUAGE) {
+        founded = Object.fromEntries(
+          Object.entries(state.wordRuBufferIndex).filter(([key]) =>
+            key.startsWith(state.searchWord.toLowerCase())
+          )
+        );
+
+        Object.keys(founded).map(function (translation) {
+          founded[translation].forEach(function (word) {
+            words.push(word);
+          });
+        });
+      } else {
+        founded = Object.fromEntries(
+          Object.entries(state.wordBufferIndex).filter(([key]) =>
+            key.startsWith(state.searchWord.toLowerCase())
+          )
+        );
+
+        words = Object.keys(founded);
+      }
+
+      let tmpWord;
+      words.splice(0, 6).forEach(function (wordIndex) {
+        tmpWord = [...rootState.dictionary.sourceWords].find(
+          (word) => word.name === wordIndex
+        );
+
+        hardSelectedWords.push(tmpWord);
+      });
+
+      hardSelectedWords = hardSelectedWords.filter((word) => Boolean(word));
+
+      commit("setHardSelectedWords", hardSelectedWords);
+    },
+    async resetExerciseIfSettingsChange({
+      state,
+      commit,
+      rootGetters,
+      dispatch,
+    }) {
+      if (state.localSettingsCache === "") {
+        commit("setLocalSettingsCache", rootGetters["settings/settingsCache"]);
+      }
+
+      if (state.localSettingsCache !== rootGetters["settings/settingsCache"]) {
+        await dispatch("resetExercise");
+        await dispatch("triggerNewExerciseItem");
+
+        commit("setLocalSettingsCache", rootGetters["settings/settingsCache"]);
+      }
     },
   },
   modules: {},

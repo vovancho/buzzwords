@@ -25,6 +25,9 @@ export default {
           word.groups.filter((group) => selectedGroups.includes(group)).length
       );
     },
+    settingsCache: (state) => {
+      return JSON.stringify(state.dictionaryConstraints);
+    },
   },
   mutations: {
     setGroupList(state, groupList) {
