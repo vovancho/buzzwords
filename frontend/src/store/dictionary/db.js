@@ -25,7 +25,7 @@ export default [
     translation: ["против", "с"],
     createdAt: "2022-06-07 07:26:55",
     type: types.SIMPLE_TYPE,
-    groups: ["Игра престолов S01E01"],
+    groups: ["Игра престолов S01E03"],
   },
   {
     name: "ahead",

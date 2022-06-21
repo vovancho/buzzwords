@@ -18,19 +18,33 @@ export default {
     wordsCount: (state, getters) => {
       return getters.groupWords.length;
     },
-    groupWords: (state, getters, rootState) => {
+    groupWords: (state, getters, rootState, rootGetters) => {
       const selectedGroups =
         rootState.settings.dictionaryConstraints.selectedGroups;
+      const fromWordIndex = rootState.settings.dictionaryConstraints.fromWord
+        ? rootGetters["settings/groupWords"].findIndex(
+            (word) =>
+              word.name === rootState.settings.dictionaryConstraints.fromWord
+          )
+        : 0;
+      const toWordIndex = rootState.settings.dictionaryConstraints.toWord
+        ? rootGetters["settings/groupWords"].findIndex(
+            (word) =>
+              word.name === rootState.settings.dictionaryConstraints.toWord
+          )
+        : rootGetters["settings/groupWords"].length - 1;
 
       if (selectedGroups.length === 0) {
-        return state.sourceWords;
+        return state.sourceWords.slice(fromWordIndex, toWordIndex + 1);
       }
 
-      return state.sourceWords.filter(
-        (word) =>
-          word.groups &&
-          word.groups.filter((group) => selectedGroups.includes(group)).length
-      );
+      return state.sourceWords
+        .filter(
+          (word) =>
+            word.groups &&
+            word.groups.filter((group) => selectedGroups.includes(group)).length
+        )
+        .slice(fromWordIndex, toWordIndex + 1);
     },
     searchWords: (state, getters) => {
       const words = getters.groupWords.filter((word) =>

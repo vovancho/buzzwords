@@ -20,15 +20,7 @@
 
       <v-divider class="mt-5" />
 
-      <v-subheader>Ограничить набор слов</v-subheader>
-      <v-autocomplete
-        hide-no-data
-        hide-selected
-        label="от слова"
-        hint="Слова отсортированы по дате добавления"
-        persistent-hint
-      />
-      <v-autocomplete label="до слова" hint="Выбрано 12 слов" persistent-hint />
+      <word-constraint />
     </v-container>
     <settings-bottom-navigation />
   </v-sheet>
@@ -37,10 +29,11 @@
 <script>
 import SettingsBottomNavigation from "@/components/settings/SettingsBottomNavigation";
 import { mapActions, mapMutations, mapState } from "vuex";
+import WordConstraint from "@/components/settings/WordConstraint";
 
 export default {
   name: "SettingsView",
-  components: { SettingsBottomNavigation },
+  components: { WordConstraint, SettingsBottomNavigation },
   data() {
     return {
       theme: false,
