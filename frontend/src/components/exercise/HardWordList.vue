@@ -127,7 +127,10 @@ export default {
   },
   watch: {
     localSearchWord(val) {
-      if (val === this.correctWord.name && this.getWordList.length === 1) {
+      if (
+        val.toLowerCase() === this.correctWord.name &&
+        this.getWordList.length === 1
+      ) {
         this.itemsSelected();
         this.itemClick();
       }
