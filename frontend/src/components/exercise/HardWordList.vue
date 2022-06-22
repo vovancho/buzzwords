@@ -125,6 +125,9 @@ export default {
         this.beginRecognition();
       }
     },
+    prepareSearchWord(search) {
+      return search.toLowerCase().replace(/ё/iu, "е");
+    },
   },
   watch: {
     localSearchWord(val) {
@@ -141,9 +144,6 @@ export default {
             break;
         }
       }
-    },
-    prepareSearchWord(search) {
-      return search.toLowerCase().replace(/ё/iu, "е");
     },
   },
 };
