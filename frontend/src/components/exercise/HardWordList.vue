@@ -1,5 +1,5 @@
 <template>
-  <v-list rounded class="fill-height">
+  <v-list rounded>
     <v-list-item>
       <v-list-item-content>
         <v-text-field
@@ -17,7 +17,7 @@
       </v-list-item-content>
     </v-list-item>
     <v-divider />
-    <div class="fill-height hard-word-list-items">
+    <div class="hard-word-list-items">
       <v-list-item-group
         multiple
         @change="itemsSelected"
@@ -49,6 +49,7 @@
 
 <script>
 import { mapGetters, mapMutations, mapState, mapActions } from "vuex";
+import * as languages from "@/store/exercise/languages";
 
 export default {
   name: "HardWordList",
@@ -127,13 +128,22 @@ export default {
   },
   watch: {
     localSearchWord(val) {
-      if (
-        val.toLowerCase() === this.correctWord.name &&
-        this.getWordList.length === 1
-      ) {
-        this.itemsSelected();
-        this.itemClick();
+      if (this.getWordList.length === 1) {
+        const preparedVal = this.prepareSearchWord(val);
+
+        switch (true) {
+          case this.language === languages.EN_LANGUAGE &&
+            this.correctWord.translation.includes(preparedVal):
+          case this.language === languages.RU_LANGUAGE &&
+            preparedVal === this.correctWord.name:
+            this.itemsSelected();
+            this.itemClick();
+            break;
+        }
       }
+    },
+    prepareSearchWord(search) {
+      return search.toLowerCase().replace(/ё/iu, "е");
     },
   },
 };

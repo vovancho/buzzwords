@@ -384,6 +384,14 @@ export default {
     async initRandomWordBuffer({ rootState, commit, state }) {
       const randomWordBuffer = [...rootState.dictionary.sourceWords]
         .filter((word) => word.name !== state.correctWord.name)
+        // .filter(
+        //   (word) =>
+        //     state.language === languages.EN_LANGUAGE &&
+        //     word.translation.filter(
+        //       (translation) =>
+        //         !state.correctWord.translation.includes(translation)
+        //     ).length === word.translation.length
+        // )
         .sort(() => Math.random() - 0.5);
       commit("setRandomWordBuffer", randomWordBuffer);
     },
