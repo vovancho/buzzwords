@@ -118,7 +118,7 @@ export default {
           word.bufferNum = 2;
           state.wordBuffer2.push(word);
           break;
-        default:
+        case 1:
           word.bufferNum = 1;
           state.wordBuffer1.push(word);
           break;
@@ -135,6 +135,7 @@ export default {
     resetSelectedWords(state) {
       state.easySelectedWords = [];
       state.hardSelectedWords = [];
+      state.correctWord = null;
     },
     shuffleWordBuffer1(state) {
       state.wordBuffer1.sort(() => Math.random() - 0.5);
@@ -233,7 +234,6 @@ export default {
 
         while (
           state.easySelectedWords.length < 5 &&
-          !getters.isEmptyBuffers &&
           state.randomWordBuffer.length
         ) {
           commit("addEasySelectedWord", await dispatch("getRandomWord"));
@@ -356,11 +356,6 @@ export default {
           ? languages.RU_LANGUAGE
           : languages.EN_LANGUAGE;
 
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        recognition.continuous = true;
-        recognition.interimResults = true;
-      }
-
       commit("setRecognition", recognition);
     },
     async buildBufferIndex({ rootState, commit }) {
@@ -381,8 +376,8 @@ export default {
         });
       });
     },
-    async initRandomWordBuffer({ rootGetters, commit, state }) {
-      const randomWordBuffer = [...rootGetters["dictionary/groupWords"]]
+    async initRandomWordBuffer({ rootState, commit, state }) {
+      const randomWordBuffer = [...rootState.dictionary.sourceWords]
         .filter((word) => word.name !== state.correctWord.name)
         .sort(() => Math.random() - 0.5);
       commit("setRandomWordBuffer", randomWordBuffer);

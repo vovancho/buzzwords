@@ -11,7 +11,7 @@
       >
         <v-list-item-content>
           <v-list-item-title
-            class="text-center"
+            class="text-center white-space-pre-line"
             v-text="isEnLang ? translationToText(word.translation) : word.name"
           ></v-list-item-title>
         </v-list-item-content>

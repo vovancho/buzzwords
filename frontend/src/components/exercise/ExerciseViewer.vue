@@ -15,7 +15,19 @@
       <easy-word-list v-if="isEasyMode" />
       <hard-word-list v-else />
     </div>
-    <div v-else><v-card-title>Нет слов</v-card-title></div>
+    <div class="fill-height" v-else>
+      <v-card-title> Нет слов </v-card-title>
+      <div class="d-flex align-center justify-center fill-height">
+        <v-btn
+          outlined
+          x-large
+          :loading="againButtonLoading"
+          @click="againClick"
+        >
+          Заново
+        </v-btn>
+      </div>
+    </div>
   </v-card>
 </template>
 
@@ -29,6 +41,11 @@ import HardWordList from "@/components/exercise/HardWordList";
 export default {
   name: "ExerciseViewer",
   components: { HardWordList, EasyWordList, ChosenWord },
+  data() {
+    return {
+      againButtonLoading: false,
+    };
+  },
   computed: {
     ...mapState("exercise", ["correctWord", "mode"]),
     ...mapGetters("exercise", ["getCorrectWordBufferNum"]),
@@ -37,7 +54,17 @@ export default {
     },
   },
   methods: {
-    ...mapActions("exercise", ["resetExerciseIfSettingsChange"]),
+    ...mapActions("exercise", [
+      "resetExerciseIfSettingsChange",
+      "resetExercise",
+      "triggerNewExerciseItem",
+    ]),
+    async againClick() {
+      this.againButtonLoading = true;
+      await this.resetExercise();
+      await this.triggerNewExerciseItem();
+      this.againButtonLoading = false;
+    },
   },
   async mounted() {
     await this.resetExerciseIfSettingsChange();

@@ -34,7 +34,7 @@
         >
           <v-list-item-content>
             <v-list-item-title
-              class="text-center"
+              class="text-center white-space-pre-line"
               v-text="
                 isEnLang ? translationToText(word.translation) : word.name
               "
@@ -122,6 +122,14 @@ export default {
         this.stopRecognition();
       } else {
         this.beginRecognition();
+      }
+    },
+  },
+  watch: {
+    localSearchWord(val) {
+      if (val === this.correctWord.name && this.getWordList.length === 1) {
+        this.itemsSelected();
+        this.itemClick();
       }
     },
   },

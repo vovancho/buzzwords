@@ -2,9 +2,14 @@
   <v-list>
     <v-list-item v-if="correctWord">
       <v-list-item-content>
-        <v-list-item-title v-text="getCorrectWordTitle"> </v-list-item-title>
+        <v-list-item-title
+          class="white-space-pre-line"
+          v-text="getCorrectWordTitle"
+        >
+        </v-list-item-title>
         <v-list-item-subtitle
           v-if="isEnLang"
+          class="white-space-pre-line"
           v-text="correctWord.transcription"
         ></v-list-item-subtitle>
       </v-list-item-content>

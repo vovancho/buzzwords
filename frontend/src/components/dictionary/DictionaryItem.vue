@@ -17,16 +17,20 @@
           </v-btn>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title v-text="word.name"></v-list-item-title>
+          <v-list-item-title
+            class="white-space-pre-line"
+            v-text="word.name"
+          ></v-list-item-title>
           <v-list-item-subtitle
+            class="white-space-pre-line"
             v-text="word.transcription"
           ></v-list-item-subtitle>
         </v-list-item-content>
 
         <v-list-item-content class="text-end">
           <v-list-item-subtitle
+            class="white-space-pre-line"
             v-text="translationToText(word.translation)"
-            style="white-space: pre-line"
           ></v-list-item-subtitle>
         </v-list-item-content>
       </template>
@@ -80,8 +84,8 @@
                   </v-list-item-content>
                   <v-list-item-content class="text-end">
                     <v-list-item-subtitle
+                      class="white-space-pre-line"
                       v-text="translationToText(phrase.translation)"
-                      style="white-space: pre-line"
                     ></v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -100,12 +104,12 @@
                     :key="sentence.sentence"
                   >
                     <v-list-item-subtitle
+                      class="mt-2"
                       v-text="sentence.sentence"
                     ></v-list-item-subtitle>
                     <v-list-item-subtitle
-                      class="text--darken-1"
+                      class="grey--text text--darken-1 white-space-pre-line"
                       v-text="sentence.translation"
-                      style="white-space: pre-line"
                     ></v-list-item-subtitle>
                   </div>
                 </v-list-item-content>
@@ -120,12 +124,12 @@
                     :key="sentence.sentence"
                   >
                     <v-list-item-subtitle
+                      class="mt-2"
                       v-text="sentence.sentence"
                     ></v-list-item-subtitle>
                     <v-list-item-subtitle
-                      class="text--darken-1"
+                      class="grey--text text--darken-1 white-space-pre-line"
                       v-text="sentence.translation"
-                      style="white-space: pre-line"
                     ></v-list-item-subtitle>
                   </div>
                 </v-list-item-content>
@@ -140,12 +144,12 @@
                     :key="sentence.sentence"
                   >
                     <v-list-item-subtitle
+                      class="mt-2"
                       v-text="sentence.sentence"
                     ></v-list-item-subtitle>
                     <v-list-item-subtitle
-                      class="text--darken-1"
+                      class="grey--text text--darken-1 white-space-pre-line"
                       v-text="sentence.translation"
-                      style="white-space: pre-line"
                     ></v-list-item-subtitle>
                   </div>
                 </v-list-item-content>
@@ -160,12 +164,12 @@
                     :key="sentence.sentence"
                   >
                     <v-list-item-subtitle
+                      class="mt-2"
                       v-text="sentence.sentence"
                     ></v-list-item-subtitle>
                     <v-list-item-subtitle
-                      class="text--darken-1"
+                      class="grey--text text--darken-1 white-space-pre-line"
                       v-text="sentence.translation"
-                      style="white-space: pre-line"
                     ></v-list-item-subtitle>
                   </div>
                 </v-list-item-content>

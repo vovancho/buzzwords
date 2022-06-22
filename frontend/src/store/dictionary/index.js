@@ -155,6 +155,7 @@ export default {
   actions: {
     updateSearchWord({ commit }, searchWord) {
       searchWord = searchWord || "";
+      commit("setPaginationPage", 1);
       commit("setSearchWord", searchWord);
     },
     getVoices() {

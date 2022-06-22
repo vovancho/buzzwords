@@ -45,6 +45,40 @@ make build
 
 
 
+629585ea8248ce24cde1b08d Фразочки
+628da21fd1997f6ee32e3b52 Слова в репу
+
+
+function query (data) {
+  return data.cards.filter(card => card.idList === '629585ea8248ce24cde1b08d').map(card => ({name: card.name, desc: card.desc}))
+}
+
+function query (data) {
+  return _.uniq(data.cards.filter(card => card.idList === '628da21fd1997f6ee32e3b52').map(card => card.name.toLowerCase())).sort()
+}
+function query (data) {
+  const exists = [
+    "make up",
+    "against",
+  ]
+
+  return _.uniq(
+  data.cards
+    .filter(card => card.idList === '628da21fd1997f6ee32e3b52')
+    .map(card => card.name.trim().toLowerCase())
+    .filter(name => !exists.includes(name))
+  )
+  .sort()
+  .map(name => ({
+    name,
+    transcription: '',
+    translation: [],
+    createdAt: new Date().toISOString().replace(/(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}).*/, '$1 $2'),
+    type: 'types.SIMPLE_TYPE',
+  }))
+}
+
+------------------------------------------------------------------------------------------------------------------------
 
 
 
