@@ -356,6 +356,11 @@ export default {
           ? languages.RU_LANGUAGE
           : languages.EN_LANGUAGE;
 
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        recognition.continuous = true;
+        recognition.interimResults = true;
+      }
+
       commit("setRecognition", recognition);
     },
     async buildBufferIndex({ rootState, commit }) {
