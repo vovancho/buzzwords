@@ -2,15 +2,17 @@
   <div>
     <v-app v-if="initialized">
       <v-app-bar app>
-        <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-        <v-spacer v-if="title" />
-        <v-toolbar-title v-if="title">
-          <div class="text-h6 text-center">{{ title }}</div>
-          <div class="text-caption text-center" v-if="subTitle">
-            {{ subTitle }}
-          </div>
-        </v-toolbar-title>
-        <v-spacer v-if="title" />
+        <v-container class="d-flex align-center px-0">
+          <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+          <v-spacer v-if="title" />
+          <v-toolbar-title v-if="title">
+            <div class="text-h6 text-center">{{ title }}</div>
+            <div class="text-caption text-center" v-if="subTitle">
+              {{ subTitle }}
+            </div>
+          </v-toolbar-title>
+          <v-spacer v-if="title" />
+        </v-container>
       </v-app-bar>
 
       <v-navigation-drawer v-model="drawer" app temporary>

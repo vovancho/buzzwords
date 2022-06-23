@@ -1,13 +1,15 @@
 <template>
-  <v-bottom-navigation grow app class="justify-space-between">
-    <v-btn @click="$router.go(-1)">
-      <span>Назад</span>
+  <v-bottom-navigation grow app>
+    <v-container class="d-flex justify-space-between py-0">
+      <v-btn @click="$router.go(-1)">
+        <span>Назад</span>
 
-      <v-icon>mdi-chevron-left</v-icon>
-    </v-btn>
-    <v-subheader class="selected-word-count">
-      {{ selectedWordCountDesc }}
-    </v-subheader>
+        <v-icon>mdi-chevron-left</v-icon>
+      </v-btn>
+      <v-subheader class="selected-word-count">
+        {{ selectedWordCountDesc }}
+      </v-subheader>
+    </v-container>
   </v-bottom-navigation>
 </template>
 

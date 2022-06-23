@@ -39,6 +39,7 @@ export default {
       "language",
       "lock",
     ]),
+    ...mapState("settings", ["autoSpeech"]),
     ...mapGetters("dictionary", ["translationToText"]),
     ...mapGetters("exercise", ["getWordList", "isCorrectWord", "isEnLang"]),
   },
@@ -51,7 +52,9 @@ export default {
         this.selectedItems.push(this.correctWord.name);
       }
 
-      this.speak(this.correctWord.name);
+      if (this.autoSpeech) {
+        this.speak(this.correctWord.name);
+      }
     },
     itemClick() {
       this.setLock(true);

@@ -1,27 +1,29 @@
 <template>
-  <v-bottom-navigation grow app class="justify-space-between">
-    <v-btn @click="toggleLanguage" :disabled="lock">
-      <span>Язык</span>
+  <v-bottom-navigation grow app>
+    <v-container class="d-flex justify-space-between py-0">
+      <v-btn @click="toggleLanguage" :disabled="lock">
+        <span>Язык</span>
 
-      <div class="font-weight-black text-h6">{{ languageTitle }}</div>
-    </v-btn>
+        <div class="font-weight-black text-h6">{{ languageTitle }}</div>
+      </v-btn>
 
-    <v-btn @click="helpClicks" :disabled="lock">
-      <span>Справка</span>
+      <v-btn @click="helpClicks" :disabled="lock">
+        <span>Справка</span>
 
-      <v-icon>mdi-help-circle-outline</v-icon>
-    </v-btn>
+        <v-icon>mdi-help-circle-outline</v-icon>
+      </v-btn>
 
-    <v-btn @click="toggleMode" :disabled="lock">
-      <span>Режим</span>
+      <v-btn @click="toggleMode" :disabled="lock">
+        <span>Режим</span>
 
-      <div
-        class="font-weight-black text-h6"
-        :class="{ 'deep-orange--text': isHardMode }"
-      >
-        {{ modeTitle }}
-      </div>
-    </v-btn>
+        <div
+          class="font-weight-black text-h6"
+          :class="{ 'deep-orange--text': isHardMode }"
+        >
+          {{ modeTitle }}
+        </div>
+      </v-btn>
+    </v-container>
   </v-bottom-navigation>
 </template>
 

@@ -1,37 +1,39 @@
 <template>
-  <v-bottom-navigation grow app class="justify-space-between">
-    <v-btn @click="$router.go(-1)">
-      <span>Назад</span>
+  <v-bottom-navigation grow app>
+    <v-container class="d-flex justify-space-between py-0">
+      <v-btn @click="$router.go(-1)">
+        <span>Назад</span>
 
-      <v-icon>mdi-chevron-left</v-icon>
-    </v-btn>
+        <v-icon>mdi-chevron-left</v-icon>
+      </v-btn>
 
-    <v-btn class="font-weight-thin" @click="toggleViewMode">
-      <span
-        class="font-weight-medium"
-        :class="dictionaryViewButtonClass('show_all_view_mode')"
-      >
-        Показать все
-      </span>
-      <span
-        class="font-weight-medium"
-        :class="dictionaryViewButtonClass('hide_translation_view_mode')"
-      >
-        Скрыть перевод
-      </span>
-      <span
-        class="font-weight-medium"
-        :class="dictionaryViewButtonClass('hide_name_view_mode')"
-      >
-        Скрыть слова
-      </span>
-    </v-btn>
+      <v-btn class="font-weight-thin" @click="toggleViewMode">
+        <span
+          class="font-weight-medium"
+          :class="dictionaryViewButtonClass('show_all_view_mode')"
+        >
+          Показать все
+        </span>
+        <span
+          class="font-weight-medium"
+          :class="dictionaryViewButtonClass('hide_translation_view_mode')"
+        >
+          Скрыть перевод
+        </span>
+        <span
+          class="font-weight-medium"
+          :class="dictionaryViewButtonClass('hide_name_view_mode')"
+        >
+          Скрыть слова
+        </span>
+      </v-btn>
 
-    <v-btn @click="toggleDictionarySort">
-      <span>{{ dictionarySortTitle }}</span>
+      <v-btn @click="toggleDictionarySort">
+        <span>{{ dictionarySortTitle }}</span>
 
-      <v-icon>{{ dictionarySortIcon }}</v-icon>
-    </v-btn>
+        <v-icon>{{ dictionarySortIcon }}</v-icon>
+      </v-btn>
+    </v-container>
   </v-bottom-navigation>
 </template>
 

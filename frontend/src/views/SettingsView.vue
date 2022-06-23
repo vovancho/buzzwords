@@ -6,6 +6,10 @@
         v-model="theme"
         label="Темная тема"
       ></v-switch>
+      <v-switch
+        v-model="localAutoSpeech"
+        label="Автовоспроизведение при выборе слова"
+      ></v-switch>
 
       <v-select
         v-model="groupItem"
@@ -40,7 +44,11 @@ export default {
     };
   },
   computed: {
-    ...mapState("settings", ["groupList", "dictionaryConstraints"]),
+    ...mapState("settings", [
+      "groupList",
+      "dictionaryConstraints",
+      "autoSpeech",
+    ]),
     groupItem: {
       get() {
         return this.dictionaryConstraints.selectedGroups;
@@ -49,9 +57,18 @@ export default {
         this.updateSelectedGroups(value);
       },
     },
+    localAutoSpeech: {
+      get() {
+        return this.autoSpeech;
+      },
+      set() {
+        this.toggleAutoSpeech();
+      },
+    },
   },
   methods: {
     ...mapMutations(["setTitle"]),
+    ...mapMutations("settings", ["toggleAutoSpeech"]),
     ...mapActions("settings", ["updateSelectedGroups"]),
     setTheme(value) {
       this.$vuetify.theme.dark = value;

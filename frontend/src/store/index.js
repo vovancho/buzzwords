@@ -30,6 +30,7 @@ export default new Vuex.Store({
     async initApp({ dispatch }) {
       await dispatch("dictionary/initSpeakLanguage");
       await dispatch("settings/initGroupList");
+      await dispatch("settings/initGeneral");
       await dispatch("dictionary/initDictionary");
       await dispatch("exercise/initRecognizer");
       await dispatch("exercise/resetExercise");

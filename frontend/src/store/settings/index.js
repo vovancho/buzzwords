@@ -10,6 +10,7 @@ export default {
       fromWord: "",
       toWord: "",
     },
+    autoSpeech: true,
   },
   getters: {
     groupWords: (state, getters, rootState) => {
@@ -51,8 +52,24 @@ export default {
     setSelectedWordCount(state, selectedWordCount) {
       state.selectedWordCount = selectedWordCount;
     },
+    setAutoSpeech(state, isAutoSpeech) {
+      state.autoSpeech = isAutoSpeech;
+    },
+    toggleAutoSpeech(state) {
+      state.autoSpeech = !state.autoSpeech;
+      localStorage.setItem(
+        "settings.autoSpeech",
+        state.autoSpeech ? "true" : "false"
+      );
+    },
   },
   actions: {
+    async initGeneral({ commit }) {
+      const isAutoSpeech =
+        localStorage.getItem("settings.autoSpeech") || "true";
+
+      commit("setAutoSpeech", isAutoSpeech === "true");
+    },
     async initGroupList({ commit, rootState, dispatch }) {
       const groupList = rootState.dictionary.sourceWords
         .map((word) => word.groups || null)
