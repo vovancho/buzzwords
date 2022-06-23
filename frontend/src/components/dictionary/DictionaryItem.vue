@@ -15,7 +15,12 @@
           class="my-0 mr-3"
           :style="{ opacity: isHideNameViewMode ? 0 : 1 }"
         >
-          <v-btn icon text @click.stop="speak(word.name)">
+          <v-btn
+            icon
+            text
+            @click.stop="speak(word.name)"
+            :disabled="isHideNameViewMode"
+          >
             <v-icon>mdi-volume-high</v-icon>
           </v-btn>
         </v-list-item-action>
