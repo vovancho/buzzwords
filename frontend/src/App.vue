@@ -73,9 +73,7 @@ export default {
   created: async function () {
     const theme = localStorage.getItem("darkTheme");
 
-    if (theme) {
-      Vuetify.framework.theme.dark = theme === "true";
-    }
+    Vuetify.framework.theme.dark = !theme || theme === "true";
 
     await this.initApp();
     this.initialized = true;
