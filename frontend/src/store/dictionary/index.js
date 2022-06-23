@@ -1,4 +1,5 @@
 import * as sort from "@/store/dictionary/sort";
+import * as viewModes from "@/store/dictionary/viewModes";
 import words from "@/store/dictionary/db";
 
 export default {
@@ -11,8 +12,9 @@ export default {
     searchWord: "",
     pagination: {
       page: 1,
-      pageSize: 15,
+      pageSize: 20,
     },
+    viewMode: viewModes.SHOW_ALL_VIEW_MODE,
   },
   getters: {
     wordsCount: (state, getters) => {
@@ -151,6 +153,24 @@ export default {
     setDictionarySort(state, dictionarySort) {
       state.dictionarySort = dictionarySort;
     },
+    setViewMode(state, viewMode) {
+      state.viewMode = viewMode;
+    },
+    toggleViewMode(state) {
+      switch (true) {
+        case state.viewMode === viewModes.SHOW_ALL_VIEW_MODE:
+          state.viewMode = viewModes.HIDE_NAME_VIEW_MODE;
+          break;
+        case state.viewMode === viewModes.HIDE_NAME_VIEW_MODE:
+          state.viewMode = viewModes.HIDE_TRANSLATION_VIEW_MODE;
+          break;
+        case state.viewMode === viewModes.HIDE_TRANSLATION_VIEW_MODE:
+          state.viewMode = viewModes.SHOW_ALL_VIEW_MODE;
+          break;
+      }
+
+      localStorage.setItem("dictionary.viewMode", state.viewMode);
+    },
   },
   actions: {
     updateSearchWord({ commit }, searchWord) {
@@ -180,8 +200,12 @@ export default {
     async initDictionary({ commit, getters }) {
       const dictionarySort =
         localStorage.getItem("dictionary.sort") || sort.ALPHABET_SORT;
+      const dictionaryViewMode =
+        localStorage.getItem("dictionary.viewMode") ||
+        viewModes.SHOW_ALL_VIEW_MODE;
 
       commit("setDictionarySort", dictionarySort);
+      commit("setViewMode", dictionaryViewMode);
       commit("setSearchWord", "");
       commit("setSearchedWords", [...getters.groupWords]);
     },

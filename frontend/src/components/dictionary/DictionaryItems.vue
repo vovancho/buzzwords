@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-list>
+    <v-list dense>
       <dictionary-item
         v-for="word in viewWords"
         :word="word"

@@ -6,6 +6,27 @@
       <v-icon>mdi-chevron-left</v-icon>
     </v-btn>
 
+    <v-btn class="font-weight-thin" @click="toggleViewMode">
+      <span
+        class="font-weight-medium"
+        :class="dictionaryViewButtonClass('show_all_view_mode')"
+      >
+        Показать все
+      </span>
+      <span
+        class="font-weight-medium"
+        :class="dictionaryViewButtonClass('hide_translation_view_mode')"
+      >
+        Скрыть перевод
+      </span>
+      <span
+        class="font-weight-medium"
+        :class="dictionaryViewButtonClass('hide_name_view_mode')"
+      >
+        Скрыть слова
+      </span>
+    </v-btn>
+
     <v-btn @click="toggleDictionarySort">
       <span>{{ dictionarySortTitle }}</span>
 
@@ -17,11 +38,12 @@
 <script>
 import { mapMutations, mapState } from "vuex";
 import * as sort from "@/store/dictionary/sort";
+import * as viewMode from "@/store/dictionary/viewModes";
 
 export default {
   name: "DictionaryBottomNavigation",
   computed: {
-    ...mapState("dictionary", ["dictionarySort"]),
+    ...mapState("dictionary", ["dictionarySort", "viewMode"]),
     dictionarySortTitle() {
       return this.dictionarySort === sort.ALPHABET_SORT
         ? "По алфавиту"
@@ -34,7 +56,20 @@ export default {
     },
   },
   methods: {
-    ...mapMutations("dictionary", ["toggleDictionarySort"]),
+    ...mapMutations("dictionary", ["toggleDictionarySort", "toggleViewMode"]),
+    dictionaryViewButtonClass(currentViewMode) {
+      switch (true) {
+        case currentViewMode === viewMode.SHOW_ALL_VIEW_MODE &&
+          this.viewMode === viewMode.SHOW_ALL_VIEW_MODE:
+        case currentViewMode === viewMode.HIDE_TRANSLATION_VIEW_MODE &&
+          this.viewMode === viewMode.HIDE_TRANSLATION_VIEW_MODE:
+        case currentViewMode === viewMode.HIDE_NAME_VIEW_MODE &&
+          this.viewMode === viewMode.HIDE_NAME_VIEW_MODE:
+          return "light-green--text text--darken-1";
+        default:
+          return "";
+      }
+    },
   },
 };
 </script>

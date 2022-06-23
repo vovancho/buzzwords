@@ -4,8 +4,8 @@
 
 
 
-
-
+Тексты Игры Престолов:
+https://transcripts.foreverdreaming.org/viewtopic.php?f=67&t=7739
 
 
 
@@ -76,6 +76,20 @@ function query (data) {
     createdAt: new Date().toISOString().replace(/(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}).*/, '$1 $2'),
     type: 'types.SIMPLE_TYPE',
   }))
+}
+
+function query (data) {
+  let curDate = new Date
+  let prepared = data
+    .sort(() => Math.random() - 0.5)
+    .map(function (word) {
+      curDate = new Date(curDate - 1000)
+      word.createdAt = curDate.toISOString().replace(/(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}).*/, '$1 $2')
+
+      return word
+    })
+
+  return _.sortBy(prepared, (word) => word.name)
 }
 
 ------------------------------------------------------------------------------------------------------------------------

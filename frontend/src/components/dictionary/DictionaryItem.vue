@@ -11,12 +11,18 @@
         ></div>
       </template>
       <template v-slot:activator>
-        <v-list-item-action class="mr-3">
-          <v-btn icon text x-large @click.stop="speak(word.name)">
+        <v-list-item-action
+          class="my-0 mr-3"
+          :style="{ opacity: isHideNameViewMode ? 0 : 1 }"
+        >
+          <v-btn icon text @click.stop="speak(word.name)">
             <v-icon>mdi-volume-high</v-icon>
           </v-btn>
         </v-list-item-action>
-        <v-list-item-content>
+        <v-list-item-content
+          class="py-1"
+          :style="{ opacity: isHideNameViewMode ? 0 : 1 }"
+        >
           <v-list-item-title
             class="white-space-pre-line"
             v-text="word.name"
@@ -27,7 +33,10 @@
           ></v-list-item-subtitle>
         </v-list-item-content>
 
-        <v-list-item-content class="text-end">
+        <v-list-item-content
+          class="text-end py-1"
+          :style="{ opacity: isHideTranslationViewMode ? 0 : 1 }"
+        >
           <v-list-item-subtitle
             class="white-space-pre-line"
             v-text="translationToText(word.translation)"
@@ -183,8 +192,9 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapState } from "vuex";
 import * as types from "@/store/dictionary/wordTypes";
+import * as viewMode from "@/store/dictionary/viewModes";
 
 export default {
   name: "DictionaryItem",
@@ -192,6 +202,7 @@ export default {
     word: Object,
   },
   computed: {
+    ...mapState("dictionary", ["viewMode"]),
     ...mapGetters("dictionary", [
       "translationToText",
       "formattedCreateAt",
@@ -208,6 +219,12 @@ export default {
         default:
           return "";
       }
+    },
+    isHideTranslationViewMode() {
+      return this.viewMode === viewMode.HIDE_TRANSLATION_VIEW_MODE;
+    },
+    isHideNameViewMode() {
+      return this.viewMode === viewMode.HIDE_NAME_VIEW_MODE;
     },
   },
   methods: {
