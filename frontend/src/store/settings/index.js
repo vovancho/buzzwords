@@ -188,14 +188,25 @@ export default {
       if (!search) {
         commit("setToWordList", []);
       } else {
+        const groupWords = getters.groupWords.sort(function (word1, word2) {
+          if (word1.createdAt > word2.createdAt) {
+            return 1;
+          }
+          if (word1.createdAt < word2.createdAt) {
+            return -1;
+          }
+
+          return 0;
+        });
+
         const fromWordIndex = state.dictionaryConstraints.fromWord
-          ? getters.groupWords.findIndex(
+          ? groupWords.findIndex(
               (word) => word.name === state.dictionaryConstraints.fromWord
             )
           : 0;
 
-        const items = getters.groupWords
-          .slice(fromWordIndex, getters.groupWords.length)
+        const items = groupWords
+          .slice(fromWordIndex, groupWords.length)
           .filter((word) => word.name.startsWith(search.toLowerCase()))
           .map((word) => word.name);
 
@@ -203,20 +214,31 @@ export default {
       }
     },
     async updateSelectedWordCount({ state, commit, getters }) {
+      const groupWords = getters.groupWords.sort(function (word1, word2) {
+        if (word1.createdAt > word2.createdAt) {
+          return 1;
+        }
+        if (word1.createdAt < word2.createdAt) {
+          return -1;
+        }
+
+        return 0;
+      });
+
       const fromWordIndex = state.dictionaryConstraints.fromWord
-        ? getters.groupWords.findIndex(
+        ? groupWords.findIndex(
             (word) => word.name === state.dictionaryConstraints.fromWord
           )
         : 0;
       const toWordIndex = state.dictionaryConstraints.toWord
-        ? getters.groupWords.findIndex(
+        ? groupWords.findIndex(
             (word) => word.name === state.dictionaryConstraints.toWord
           )
-        : getters.groupWords.length - 1;
+        : groupWords.length - 1;
 
       commit(
         "setSelectedWordCount",
-        getters.groupWords.slice(fromWordIndex, toWordIndex + 1).length
+        groupWords.slice(fromWordIndex, toWordIndex + 1).length
       );
     },
   },

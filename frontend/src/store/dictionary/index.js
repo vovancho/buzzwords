@@ -21,6 +21,16 @@ export default {
       return getters.groupWords.length;
     },
     groupWords: (state, getters, rootState, rootGetters) => {
+      const sourceWords = state.sourceWords.sort(function (word1, word2) {
+        if (word1.createdAt > word2.createdAt) {
+          return 1;
+        }
+        if (word1.createdAt < word2.createdAt) {
+          return -1;
+        }
+
+        return 0;
+      });
       const selectedGroups =
         rootState.settings.dictionaryConstraints.selectedGroups;
       const fromWordIndex = rootState.settings.dictionaryConstraints.fromWord
@@ -37,10 +47,10 @@ export default {
         : rootGetters["settings/groupWords"].length - 1;
 
       if (selectedGroups.length === 0) {
-        return state.sourceWords.slice(fromWordIndex, toWordIndex + 1);
+        return sourceWords.slice(fromWordIndex, toWordIndex + 1);
       }
 
-      return state.sourceWords
+      return sourceWords
         .filter(
           (word) =>
             word.groups &&
