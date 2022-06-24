@@ -381,17 +381,36 @@ export default {
         });
       });
     },
-    async initRandomWordBuffer({ rootState, commit, state }) {
+    async initRandomWordBuffer({ rootState, commit, state, rootGetters }) {
       const randomWordBuffer = [...rootState.dictionary.sourceWords]
         .filter((word) => word.name !== state.correctWord.name)
-        // .filter(
-        //   (word) =>
-        //     state.language === languages.EN_LANGUAGE &&
-        //     word.translation.filter(
-        //       (translation) =>
-        //         !state.correctWord.translation.includes(translation)
-        //     ).length === word.translation.length
-        // )
+        // Исключаем повторяющиеся переводы
+        .filter(function (word, index, buffer) {
+          if (state.language === languages.EN_LANGUAGE) {
+            const wordIndex = rootGetters["dictionary/translationToText"](
+              word.translation
+            );
+            const correctWordIndex = rootGetters[
+              "dictionary/translationToText"
+            ](state.correctWord.translation);
+
+            if (wordIndex === correctWordIndex) {
+              return false;
+            }
+
+            return (
+              buffer.findIndex(function (wordBuf) {
+                const wordBufIndex = rootGetters[
+                  "dictionary/translationToText"
+                ](wordBuf.translation);
+
+                return wordBufIndex === wordIndex;
+              }) === index
+            );
+          } else {
+            return true;
+          }
+        })
         .sort(() => Math.random() - 0.5);
       commit("setRandomWordBuffer", randomWordBuffer);
     },

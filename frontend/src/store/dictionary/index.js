@@ -59,9 +59,19 @@ export default {
         .slice(fromWordIndex, toWordIndex + 1);
     },
     searchWords: (state, getters) => {
-      const words = getters.groupWords.filter((word) =>
-        word.name.startsWith(state.searchWord.toLowerCase())
-      );
+      const words = getters.groupWords.filter(function (word) {
+        const cyrillicPattern = /^[\u0400-\u04FF]+$/;
+
+        if (cyrillicPattern.test(state.searchWord.toLowerCase())) {
+          return (
+            word.translation.filter((translation) =>
+              translation.startsWith(state.searchWord.toLowerCase())
+            ).length > 0
+          );
+        } else {
+          return word.name.startsWith(state.searchWord.toLowerCase());
+        }
+      });
 
       return words.sort(function (word1, word2) {
         switch (state.dictionarySort) {
