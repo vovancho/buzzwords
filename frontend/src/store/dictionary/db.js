@@ -65,7 +65,7 @@ export default [
   {
     name: "ahead",
     transcription: "əˈhɛd",
-    translation: ["вперед"],
+    translation: ["вперед", "предстоящий"],
     createdAt: "2022-06-23 09:09:47",
     type: types.SIMPLE_TYPE,
     groups: ["Игра престолов S01E01"],
@@ -142,11 +142,12 @@ export default [
     translation: ["одобрить"],
     createdAt: "2022-06-23 09:11:09",
     type: types.SIMPLE_TYPE,
+    phrases: ["approval"],
   },
   {
     name: "attend",
     transcription: "əˈtɛnd",
-    translation: ["посещать"],
+    translation: ["посещать", "присутствовать"],
     createdAt: "2022-06-23 09:10:27",
     type: types.SIMPLE_TYPE,
   },
@@ -338,6 +339,7 @@ export default [
     translation: ["спокойствие"],
     createdAt: "2022-06-23 09:09:21",
     type: types.SIMPLE_TYPE,
+    phrases: ["calm down"],
   },
   {
     name: "calm down",
@@ -420,7 +422,7 @@ export default [
   {
     name: "cheer",
     transcription: "ʧɪr",
-    translation: ["радость"],
+    translation: ["радость", "настроение"],
     createdAt: "2022-06-23 09:09:09",
     type: types.SIMPLE_TYPE,
   },
@@ -617,7 +619,7 @@ export default [
   {
     name: "consider",
     transcription: "kənˈsɪdər",
-    translation: ["рассмотреть возможность"],
+    translation: ["рассматривать", "учитывать"],
     createdAt: "2022-06-23 09:10:26",
     type: types.SIMPLE_TYPE,
   },
@@ -631,7 +633,7 @@ export default [
   {
     name: "costs",
     transcription: "kɑsts",
-    translation: ["затраты"],
+    translation: ["расходы"],
     createdAt: "2022-06-23 09:11:10",
     type: types.SIMPLE_TYPE,
   },
@@ -736,7 +738,7 @@ export default [
   {
     name: "descriptive",
     transcription: "dɪˈskrɪptɪv",
-    translation: ["описательный"],
+    translation: ["описательный", "наглядный"],
     createdAt: "2022-06-23 09:09:59",
     type: types.SIMPLE_TYPE,
   },
@@ -1065,7 +1067,7 @@ export default [
   {
     name: "gentle",
     transcription: "ˈʤɛntəl",
-    translation: ["нежный"],
+    translation: ["нежный", "вежливый"],
     createdAt: "2022-06-23 09:10:10",
     type: types.SIMPLE_TYPE,
   },
@@ -1303,7 +1305,7 @@ export default [
   {
     name: "handle",
     transcription: "ˈhændəl",
-    translation: ["справиться"],
+    translation: ["управлять"],
     createdAt: "2022-06-23 09:11:56",
     type: types.SIMPLE_TYPE,
   },
@@ -1459,7 +1461,7 @@ export default [
   {
     name: "horrible",
     transcription: "ˈhɔrəbəl",
-    translation: ["какой ужас"],
+    translation: ["ужасный"],
     createdAt: "2022-06-23 09:09:18",
     type: types.SIMPLE_TYPE,
   },
@@ -1516,9 +1518,10 @@ export default [
   {
     name: "income",
     transcription: "ˈɪnˌkʌm",
-    translation: ["доход"],
+    translation: ["доход", "прибыль"],
     createdAt: "2022-06-23 09:12:03",
     type: types.SIMPLE_TYPE,
+    phrases: ["income tax"],
   },
   {
     name: "income tax",
@@ -1610,6 +1613,7 @@ export default [
     translation: ["стучать", "ударять"],
     createdAt: "2022-06-23 09:09:23",
     type: types.SIMPLE_TYPE,
+    phrases: ["knock down", "knock off", "knock out"],
   },
   {
     name: "knock down",
@@ -1925,7 +1929,7 @@ export default [
   {
     name: "originally",
     transcription: "əˈrɪʤənəli",
-    translation: ["первоначально"],
+    translation: ["первоначально", "оригинально"],
     createdAt: "2022-06-23 09:10:25",
     type: types.SIMPLE_TYPE,
   },
@@ -2073,7 +2077,7 @@ export default [
   {
     name: "promotion",
     transcription: "prəˈmoʊʃən",
-    translation: ["повышение"],
+    translation: ["повышение", "продвижение"],
     createdAt: "2022-06-23 09:10:58",
     type: types.SIMPLE_TYPE,
   },
@@ -2188,6 +2192,7 @@ export default [
     translation: ["редкий"],
     createdAt: "2022-06-23 09:11:40",
     type: types.SIMPLE_TYPE,
+    phrases: ["rarely"],
   },
   {
     name: "rarely",
@@ -2213,7 +2218,7 @@ export default [
   {
     name: "recognition",
     transcription: "ˌrɛkəgˈnɪʃən",
-    translation: ["признание"],
+    translation: ["признание", "распознавание"],
     createdAt: "2022-06-23 09:10:59",
     type: types.SIMPLE_TYPE,
   },
@@ -2223,6 +2228,7 @@ export default [
     translation: ["распознавать"],
     createdAt: "2022-06-23 09:08:04",
     type: types.SIMPLE_TYPE,
+    phrases: ["recognition"],
   },
   {
     name: "regrettable",
@@ -2255,7 +2261,7 @@ export default [
   {
     name: "respond",
     transcription: "rɪˈspɑnd",
-    translation: ["реагировать"],
+    translation: ["реагировать", "отвечать"],
     createdAt: "2022-06-23 09:09:24",
     type: types.SIMPLE_TYPE,
   },
@@ -2434,6 +2440,7 @@ export default [
     translation: ["чувство"],
     createdAt: "2022-06-23 09:14:11",
     type: types.SIMPLE_TYPE,
+    phrases: ["sensation"],
   },
   {
     name: "set off",
@@ -2518,6 +2525,7 @@ export default [
     translation: ["тихий"],
     createdAt: "2022-06-23 09:09:15",
     type: types.SIMPLE_TYPE,
+    phrases: ["silence"],
   },
   {
     name: "since",
@@ -2607,7 +2615,7 @@ export default [
   {
     name: "spoil",
     transcription: "spɔɪl",
-    translation: ["портиться"],
+    translation: ["портить"],
     createdAt: "2022-06-23 09:09:58",
     type: types.SIMPLE_TYPE,
   },
@@ -2847,9 +2855,10 @@ export default [
   {
     name: "thick",
     transcription: "θɪk",
-    translation: ["толстый"],
+    translation: ["толстый", "густой"],
     createdAt: "2022-06-23 09:09:19",
     type: types.SIMPLE_TYPE,
+    phrases: ["thickness"],
   },
   {
     name: "thickness",
@@ -2926,7 +2935,7 @@ export default [
   {
     name: "tight",
     transcription: "taɪt",
-    translation: ["тугой"],
+    translation: ["тугой", "плотный"],
     createdAt: "2022-06-23 09:11:05",
     type: types.SIMPLE_TYPE,
   },
@@ -2975,7 +2984,7 @@ export default [
   {
     name: "tricky",
     transcription: "ˈtrɪki",
-    translation: ["сложный"],
+    translation: ["хитрый"],
     createdAt: "2022-06-23 09:09:48",
     type: types.SIMPLE_TYPE,
   },
@@ -3066,7 +3075,7 @@ export default [
   {
     name: "unless",
     transcription: "ənˈlɛs",
-    translation: ["пока не"],
+    translation: ["пока не", "если не"],
     createdAt: "2022-06-23 09:09:07",
     type: types.SIMPLE_TYPE,
   },
@@ -3094,28 +3103,28 @@ export default [
   {
     name: "urge",
     transcription: "ɜrʤ",
-    translation: ["побуждать"],
+    translation: ["побуждать", "убеждать"],
     createdAt: "2022-06-23 09:11:32",
     type: types.SIMPLE_TYPE,
   },
   {
     name: "vacation",
     transcription: "veɪˈkeɪʃən",
-    translation: ["отпуск"],
+    translation: ["отпуск", "каникулы"],
     createdAt: "2022-06-23 09:11:01",
     type: types.SIMPLE_TYPE,
   },
   {
     name: "valuable",
     transcription: "ˈvæljəbəl",
-    translation: ["ценный"],
+    translation: ["ценный", "полезный"],
     createdAt: "2022-06-23 09:11:00",
     type: types.SIMPLE_TYPE,
   },
   {
     name: "value",
     transcription: "ˈvælju",
-    translation: ["ценность"],
+    translation: ["ценность", "значение", "стоимость"],
     createdAt: "2022-06-23 09:12:06",
     type: types.SIMPLE_TYPE,
   },
@@ -3185,7 +3194,7 @@ export default [
   {
     name: "wealth",
     transcription: "wɛlθ",
-    translation: ["богатство"],
+    translation: ["богатство", "благосостояние"],
     createdAt: "2022-06-23 09:11:14",
     type: types.SIMPLE_TYPE,
   },
