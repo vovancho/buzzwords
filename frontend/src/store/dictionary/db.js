@@ -36,7 +36,7 @@ export default [
   {
     name: "admit",
     transcription: "ədˈmɪt",
-    translation: ["признавать"],
+    translation: ["признавать", "допускать"],
     createdAt: "2022-06-23 09:12:46",
     type: types.SIMPLE_TYPE,
   },
@@ -158,6 +158,7 @@ export default [
     createdAt: "2022-06-23 09:10:31",
     type: types.SIMPLE_TYPE,
     groups: ["Игра престолов S01E01"],
+    phrases: ["attractively"],
   },
   {
     name: "attractively",
@@ -232,7 +233,7 @@ export default [
   {
     name: "belief",
     transcription: "bɪˈlif",
-    translation: ["вера"],
+    translation: ["вера", "убеждение"],
     createdAt: "2022-06-23 09:12:08",
     type: types.SIMPLE_TYPE,
     groups: ["Игра престолов S01E02"],
@@ -454,6 +455,7 @@ export default [
     translation: ["гражданин"],
     createdAt: "2022-06-23 09:13:01",
     type: types.SIMPLE_TYPE,
+    phrases: ["citizenship"],
   },
   {
     name: "citizenship",
@@ -598,7 +600,7 @@ export default [
   {
     name: "compete",
     transcription: "kəmˈpit",
-    translation: ["конкурировать"],
+    translation: ["конкурировать", "соревноваться"],
     createdAt: "2022-06-23 09:13:41",
     type: types.SIMPLE_TYPE,
   },
@@ -780,7 +782,7 @@ export default [
   {
     name: "effort",
     transcription: "ˈɛfərt",
-    translation: ["усилие"],
+    translation: ["усилие", "попытка"],
     createdAt: "2022-06-23 09:12:28",
     type: types.SIMPLE_TYPE,
   },
@@ -892,14 +894,14 @@ export default [
   {
     name: "exhaust",
     transcription: "ɪgˈzɑst",
-    translation: ["выхлоп"],
+    translation: ["выхлоп", "исчерпывать"],
     createdAt: "2022-06-23 09:12:23",
     type: types.SIMPLE_TYPE,
   },
   {
     name: "facial",
     transcription: "ˈfeɪʃəl",
-    translation: ["лица"],
+    translation: ["лицевой"],
     createdAt: "2022-06-23 09:12:45",
     type: types.SIMPLE_TYPE,
   },
@@ -983,7 +985,7 @@ export default [
   {
     name: "force",
     transcription: "fɔrs",
-    translation: ["сила"],
+    translation: ["сила", "заставлять"],
     createdAt: "2022-06-23 09:12:29",
     type: types.SIMPLE_TYPE,
   },
@@ -1032,7 +1034,7 @@ export default [
   {
     name: "gain",
     transcription: "geɪn",
-    translation: ["прирост"],
+    translation: ["прирост", "усиление"],
     createdAt: "2022-06-23 09:13:42",
     type: types.SIMPLE_TYPE,
   },
@@ -1767,7 +1769,7 @@ export default [
   {
     name: "mad",
     transcription: "mæd",
-    translation: ["без ума"],
+    translation: ["безумный"],
     createdAt: "2022-06-23 09:13:17",
     type: types.SIMPLE_TYPE,
   },
@@ -2000,7 +2002,7 @@ export default [
   {
     name: "persuasion",
     transcription: "pərˈsweɪʒən",
-    translation: ["убеждение"],
+    translation: ["убеждение", "уговор"],
     createdAt: "2022-06-23 09:13:38",
     type: types.SIMPLE_TYPE,
   },
@@ -2063,9 +2065,10 @@ export default [
   {
     name: "prohibit",
     transcription: "proʊˈhɪbət",
-    translation: ["запрещать"],
+    translation: ["запрещать", "препятствовать"],
     createdAt: "2022-06-23 09:13:47",
     type: types.SIMPLE_TYPE,
+    phrases: ["prohibition"],
   },
   {
     name: "prohibition",
@@ -2254,7 +2257,7 @@ export default [
   {
     name: "reserve",
     transcription: "rɪˈzɜrv",
-    translation: ["резерв"],
+    translation: ["резервировать"],
     createdAt: "2022-06-23 09:13:39",
     type: types.SIMPLE_TYPE,
   },
@@ -2508,7 +2511,7 @@ export default [
   {
     name: "sight",
     transcription: "saɪt",
-    translation: ["взгляд"],
+    translation: ["взгляд", "зрение"],
     createdAt: "2022-06-23 09:12:59",
     type: types.SIMPLE_TYPE,
   },
@@ -2587,7 +2590,7 @@ export default [
   {
     name: "society",
     transcription: "səˈsaɪəti",
-    translation: ["общество"],
+    translation: ["общество", "общественность"],
     createdAt: "2022-06-23 09:13:24",
     type: types.SIMPLE_TYPE,
   },
@@ -2668,6 +2671,7 @@ export default [
       name: "stuck",
       transcription: "stʌk",
     },
+    phrases: ["sticky"],
   },
   {
     name: "sticky",
@@ -2693,7 +2697,7 @@ export default [
   {
     name: "stretch",
     transcription: "strɛʧ",
-    translation: ["протяжение"],
+    translation: ["растягиваться"],
     createdAt: "2022-06-23 09:13:23",
     type: types.SIMPLE_TYPE,
   },
@@ -2884,7 +2888,7 @@ export default [
   {
     name: "thoughtful",
     transcription: "ˈθɔtfəl",
-    translation: ["заботливая"],
+    translation: ["заботливый"],
     createdAt: "2022-06-23 09:14:52",
     type: types.SIMPLE_TYPE,
   },
@@ -2977,7 +2981,7 @@ export default [
   {
     name: "treat",
     transcription: "trit",
-    translation: ["удовольствие"],
+    translation: ["удовольствие", "относиться", "лечить"],
     createdAt: "2022-06-23 09:14:46",
     type: types.SIMPLE_TYPE,
   },
@@ -3082,7 +3086,7 @@ export default [
   {
     name: "unlike",
     transcription: "ənˈlaɪk",
-    translation: ["в отличие"],
+    translation: ["в отличие от"],
     createdAt: "2022-06-23 09:13:44",
     type: types.SIMPLE_TYPE,
   },
