@@ -4,7 +4,7 @@ export default [
   {
     name: "accomplish",
     transcription: "əˈkɑmplɪʃ",
-    translation: ["выполнить"],
+    translation: ["выполнить", "совершать"],
     createdAt: "2022-06-23 09:07:54",
     type: types.SIMPLE_TYPE,
   },
@@ -43,7 +43,7 @@ export default [
   {
     name: "affect",
     transcription: "əˈfɛkt",
-    translation: ["оказывать воздействие"],
+    translation: ["влиять", "воздействовать"],
     createdAt: "2022-06-23 09:08:13",
     type: types.SIMPLE_TYPE,
   },
@@ -110,7 +110,7 @@ export default [
   {
     name: "appearance",
     transcription: "əˈpɪrəns",
-    translation: ["внешность"],
+    translation: ["внешность", "появление"],
     createdAt: "2022-06-23 09:08:02",
     type: types.SIMPLE_TYPE,
   },
@@ -352,6 +352,7 @@ export default [
     translation: ["нести", "везти"],
     createdAt: "2022-06-23 09:14:41",
     type: types.SIMPLE_TYPE,
+    phrases: ["carry on", "carry out"],
   },
   {
     name: "carry on",
@@ -391,7 +392,7 @@ export default [
   {
     name: "cheat",
     transcription: "ʧit",
-    translation: ["изменять"],
+    translation: ["обманывать"],
     createdAt: "2022-06-23 09:08:10",
     type: types.SIMPLE_TYPE,
   },
@@ -840,7 +841,7 @@ export default [
   {
     name: "equally",
     transcription: "ˈikwəli",
-    translation: ["в равной степени"],
+    translation: ["одинаково"],
     createdAt: "2022-06-23 09:08:44",
     type: types.SIMPLE_TYPE,
   },
@@ -959,14 +960,14 @@ export default [
   {
     name: "firm",
     transcription: "fɜrm",
-    translation: ["твердый"],
+    translation: ["твердый", "фирма"],
     createdAt: "2022-06-23 09:08:55",
     type: types.SIMPLE_TYPE,
   },
   {
     name: "fit",
     transcription: "fɪt",
-    translation: ["поместиться"],
+    translation: ["поместиться", "соответствовать"],
     createdAt: "2022-06-23 09:07:49",
     type: types.SIMPLE_TYPE,
   },
@@ -1496,6 +1497,7 @@ export default [
     translation: ["впечатлить"],
     createdAt: "2022-06-23 09:07:40",
     type: types.SIMPLE_TYPE,
+    phrases: ["impressed"],
   },
   {
     name: "impressed",
@@ -1640,7 +1642,7 @@ export default [
   {
     name: "lay",
     transcription: "leɪ",
-    translation: ["положить"],
+    translation: ["лежать", "положить"],
     createdAt: "2022-06-23 09:08:19",
     type: types.IRREGULAR_VERB_TYPE,
     v2: {
@@ -1909,7 +1911,7 @@ export default [
   {
     name: "once",
     transcription: "wʌns",
-    translation: ["однажды"],
+    translation: ["однажды", "раз"],
     createdAt: "2022-06-23 09:07:28",
     type: types.SIMPLE_TYPE,
   },
@@ -1968,6 +1970,7 @@ export default [
     translation: ["проходить", "передавать"],
     createdAt: "2022-06-23 09:08:46",
     type: types.SIMPLE_TYPE,
+    phrases: ["pass out"],
   },
   {
     name: "pass out",
@@ -2028,14 +2031,14 @@ export default [
   {
     name: "pretend",
     transcription: "priˈtɛnd",
-    translation: ["притворяться"],
+    translation: ["притворяться", "претендовать"],
     createdAt: "2022-06-23 09:07:44",
     type: types.SIMPLE_TYPE,
   },
   {
     name: "prevention",
     transcription: "priˈvɛnʃən",
-    translation: ["профилактика"],
+    translation: ["профилактика", "предупреждение"],
     createdAt: "2022-06-23 09:08:34",
     type: types.SIMPLE_TYPE,
   },
@@ -2351,7 +2354,7 @@ export default [
   {
     name: "rush",
     transcription: "rʌʃ",
-    translation: ["порыв"],
+    translation: ["прилив", "торопиться", "срочный"],
     createdAt: "2022-06-23 09:07:27",
     type: types.SIMPLE_TYPE,
   },
@@ -2879,7 +2882,7 @@ export default [
   {
     name: "throughout",
     transcription: "θruˈaʊt",
-    translation: ["через"],
+    translation: ["через", "по всему"],
     createdAt: "2022-06-23 09:07:42",
     type: types.SIMPLE_TYPE,
   },
@@ -2930,7 +2933,7 @@ export default [
   {
     name: "tire",
     transcription: "ˈtaɪər",
-    translation: ["уставать"],
+    translation: ["утомлять", "шина"],
     createdAt: "2022-06-23 09:08:47",
     type: types.SIMPLE_TYPE,
   },
@@ -3119,7 +3122,7 @@ export default [
   {
     name: "violent",
     transcription: "ˈvaɪələnt",
-    translation: ["жестокий"],
+    translation: ["жестокий", "яростный"],
     createdAt: "2022-06-23 09:09:03",
     type: types.SIMPLE_TYPE,
   },
@@ -3204,7 +3207,7 @@ export default [
   {
     name: "whatever",
     transcription: "ˌwʌˈtɛvər",
-    translation: ['что бы ни, "все", "что"'],
+    translation: ["что бы ни", "любой"],
     createdAt: "2022-06-23 09:07:36",
     type: types.SIMPLE_TYPE,
   },
@@ -3225,7 +3228,7 @@ export default [
   {
     name: "whom",
     transcription: "hum",
-    translation: ["кто"],
+    translation: ["кого", "кому"],
     createdAt: "2022-06-23 09:08:07",
     type: types.SIMPLE_TYPE,
   },

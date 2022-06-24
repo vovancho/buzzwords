@@ -11,7 +11,7 @@ export default {
     utterance: null,
     searchWord: "",
     pagination: {
-      page: 1,
+      page: 5,
       pageSize: 20,
     },
     viewMode: viewModes.SHOW_ALL_VIEW_MODE,
