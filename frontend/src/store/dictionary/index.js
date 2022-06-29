@@ -15,6 +15,7 @@ export default {
       pageSize: 20,
     },
     viewMode: viewModes.SHOW_ALL_VIEW_MODE,
+    localSettingsCache: "",
   },
   getters: {
     wordsCount: (state, getters) => {
@@ -191,6 +192,9 @@ export default {
 
       localStorage.setItem("dictionary.viewMode", state.viewMode);
     },
+    setLocalSettingsCache(state, localSettingsCache) {
+      state.localSettingsCache = localSettingsCache;
+    },
   },
   actions: {
     updateSearchWord({ commit }, searchWord) {
@@ -231,6 +235,17 @@ export default {
     },
     async updatePaginationPage({ commit }, page) {
       commit("setPaginationPage", page);
+    },
+    async resetDictionaryIfSettingsChange({ state, commit, rootGetters }) {
+      if (state.localSettingsCache === "") {
+        commit("setLocalSettingsCache", rootGetters["settings/settingsCache"]);
+      }
+
+      if (state.localSettingsCache !== rootGetters["settings/settingsCache"]) {
+        commit("setPaginationPage", 1);
+
+        commit("setLocalSettingsCache", rootGetters["settings/settingsCache"]);
+      }
     },
   },
   modules: {},

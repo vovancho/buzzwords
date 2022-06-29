@@ -8,7 +8,13 @@
           placeholder="Наберите ответ"
         >
           <template v-slot:append-outer>
-            <v-btn fab depressed @click="recognizeSpeech()">
+            <v-btn
+              fab
+              depressed
+              :color="recognizer.isRecognizing ? 'red' : ''"
+              :outlined="recognizer.isRecognizing"
+              @click="recognizeSpeech()"
+            >
               <v-icon v-if="recognizer.isRecognizing"> mdi-stop </v-icon>
               <v-icon v-else> mdi-microphone </v-icon>
             </v-btn>

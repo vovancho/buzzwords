@@ -210,7 +210,7 @@ export default [
   {
     name: "be up to",
     transcription: "bi ʌp tu",
-    translation: ["быть способным зависеть от", "задумать"],
+    translation: ["быть способным", "зависеть от", "задумать"],
     createdAt: "2022-06-23 09:08:26",
     type: types.PHRASAL_VERB_TYPE,
     groups: ["Игра престолов S01E02"],
