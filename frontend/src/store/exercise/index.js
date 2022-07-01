@@ -447,9 +447,9 @@ export default {
 
       let tmpWord;
       words.splice(0, 6).forEach(function (wordIndex) {
-        tmpWord = state.randomWordBuffer.find(
-          (word) => word.name === wordIndex
-        );
+        tmpWord = [...state.randomWordBuffer, state.correctWord]
+          .sort(() => Math.random() - 0.5)
+          .find((word) => word.name === wordIndex);
 
         hardSelectedWords.push(tmpWord);
       });
