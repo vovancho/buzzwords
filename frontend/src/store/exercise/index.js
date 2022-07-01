@@ -414,7 +414,7 @@ export default {
         .sort(() => Math.random() - 0.5);
       commit("setRandomWordBuffer", randomWordBuffer);
     },
-    async foundHardModeList({ rootState, state, commit }) {
+    async foundHardModeList({ state, commit }) {
       let founded;
       let words = [];
 
@@ -447,7 +447,7 @@ export default {
 
       let tmpWord;
       words.splice(0, 6).forEach(function (wordIndex) {
-        tmpWord = [...rootState.dictionary.sourceWords].find(
+        tmpWord = state.randomWordBuffer.find(
           (word) => word.name === wordIndex
         );
 
