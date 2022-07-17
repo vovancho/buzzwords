@@ -49,13 +49,13 @@ make build
 628da21fd1997f6ee32e3b52 Слова в репу
 
 
-function query (data) {
-  return data.cards.filter(card => card.idList === '629585ea8248ce24cde1b08d').map(card => ({name: card.name, desc: card.desc}))
-}
-
-function query (data) {
-  return _.uniq(data.cards.filter(card => card.idList === '628da21fd1997f6ee32e3b52').map(card => card.name.toLowerCase())).sort()
-}
+// function query (data) {
+//   return data.cards.filter(card => card.idList === '629585ea8248ce24cde1b08d').map(card => ({name: card.name, desc: card.desc}))
+// }
+//
+// function query (data) {
+//   return _.uniq(data.cards.filter(card => card.idList === '628da21fd1997f6ee32e3b52').map(card => card.name.toLowerCase())).sort()
+// }
 function query (data) {
   const exists = [
     "make up",
